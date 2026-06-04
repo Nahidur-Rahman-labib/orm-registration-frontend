@@ -1,0 +1,41 @@
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f4f6f8;
+}
+
+.sidebar {
+    width: 260px;
+    background: #111827;
+    color: white;
+    padding: 24px;
+}
+
+.sidebar h2 {
+    margin-bottom: 30px;
+    font-size: 22px;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar a {
+    color: #d1d5db;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.content {
+    flex: 1;
+    padding: 30px;
+}
