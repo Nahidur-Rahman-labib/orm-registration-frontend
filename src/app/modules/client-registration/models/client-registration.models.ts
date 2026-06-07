@@ -19,6 +19,7 @@ export interface ClientDetailsRequest {
 }
 
 export interface AddressRequest {
+    addressId?: number;
     clientId?: number;
     address?: string;
     addressTypeId?: number;
@@ -33,6 +34,7 @@ export interface AddressRequest {
 }
 
 export interface AccountRequest {
+    accountId?: number;
     officeId?: number;
     clAccSl?: number;
     clientId?: number;

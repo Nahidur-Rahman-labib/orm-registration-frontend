@@ -1,32 +1,24 @@
-<div class="client-read-page">
-    <h1>All Clients</h1>
+<h1>All Clients</h1>
 
-    <div *ngIf="loading">Loading...</div>
-    <div *ngIf="error">{{ error }}</div>
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
 
-    <table *ngIf="!loading && clients.length > 0">
-        <thead>
-            <tr>
-                <th>Client ID</th>
-                <th>Client Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let client of clients">
-                <td>{{ client.clientId }}</td>
-                <td>{{ client.clientName }}</td>
-                <td>
-                    <!-- EDIT BUTTON -->
-                    <button (click)="editClient(client.clientId)">Edit</button>
-                    <!-- DELETE BUTTON -->
-                    <button (click)="deleteClient(client.clientId)">Delete</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<table *ngIf="!loading && clients.length > 0">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let client of clients">
+            <td>{{ client.clientName }}</td>
+            <td>
+                <button (click)="editClient(client.clientId)">Edit</button>
+                <button (click)="deleteClient(client.clientId)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-    <div *ngIf="!loading && clients.length === 0">
-        No clients found.
-    </div>
-</div>
+<div *ngIf="!loading && clients.length === 0">No clients found.</div>

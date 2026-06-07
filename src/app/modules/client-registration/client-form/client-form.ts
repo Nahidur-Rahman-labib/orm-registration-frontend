@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { switchMap } from 'rxjs';
+import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { switchMap, forkJoin } from 'rxjs';
 import { ClientRegistrationService } from '../service/client-registration';
 import {
   CreateClientRequest,
@@ -14,17 +14,20 @@ import {
 
 @Component({
   selector: 'app-client-form',
-  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './client-form.html',
-  styleUrl: './client-form.scss'
+  styleUrls: ['./client-form.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule]
 })
 export class ClientForm implements OnInit {
 
   registrationForm: FormGroup;
   loading = false;
   message = '';
-  isEdit = false;        // <<--- Track if we are in edit mode
-  clientId: number | null = null; // <<--- Store clientId for edit
+  isEdit = false;
+  clientId: number | null = null;
+  currentAddressId: number | null = null;
+  currentAccountId: number | null = null;
 
   addressTypes: LookupResponse[] = [];
   countries: LookupResponse[] = [];
@@ -35,45 +38,23 @@ export class ClientForm implements OnInit {
   constructor(
     private fb: FormBuilder,
     private clientService: ClientRegistrationService,
-    private route: ActivatedRoute,  // <<--- add this
+    private route: ActivatedRoute,
     private router: Router
   ) {
     this.registrationForm = this.fb.group({
-      client: this.fb.group({
-        clientName: ['', Validators.required]
-      }),
+      client: this.fb.group({ clientName: ['', Validators.required] }),
       details: this.fb.group({
-        fatherName: [''],
-        motherName: [''],
-        gender: [''],
-        dateOfBirth: [''],
-        maritalStatus: [''],
-        spouseName: [''],
-        nid: ['']
+        fatherName: [''], motherName: [''], gender: [''], dateOfBirth: [''],
+        maritalStatus: [''], spouseName: [''], nid: ['']
       }),
       address: this.fb.group({
-        address: [''],
-        addressTypeId: [''],
-        countryId: [''],
-        divisionId: [''],
-        districtId: [''],
-        thanaId: [''],
-        city: [''],
-        zipCode: [''],
-        mobileNo: [''],
-        email: ['']
+        address: [''], addressTypeId: [''], countryId: [''], divisionId: [''],
+        districtId: [''], thanaId: [''], city: [''], zipCode: [''], mobileNo: [''], email: ['']
       }),
       account: this.fb.group({
-        officeId: [''],
-        clAccSl: [''],
-        accountNo: [''],         // <--- MUST exist
-        accountTitle: [''],
-        accountType: [''],       // <--- MUST exist
-        accountOpenDt: [''],
-        effectiveDt: [''],
-        expiryDt: [''],
-        limitAmt: [''],
-        entityId: ['']
+        officeId: [''], clAccSl: [''], accountNo: [''], accountTitle: [''],
+        accountType: [''], accountOpenDt: [''], effectiveDt: [''],
+        expiryDt: [''], limitAmt: [''], entityId: ['']
       })
     });
   }
@@ -81,45 +62,12 @@ export class ClientForm implements OnInit {
   ngOnInit(): void {
     this.loadLookups();
 
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params: ParamMap) => {
       const idParam = params.get('id');
       if (idParam) {
         this.isEdit = true;
         this.clientId = +idParam;
         this.loadClientData(this.clientId);
-      }
-    });
-  }
-  loadClientData(clientId: number): void { // <<--- Insert this method
-    this.loading = true;
-    this.clientService.getClientById(clientId).subscribe({
-      next: (client) => {
-        this.registrationForm.get('client')?.patchValue({ clientName: client.clientName });
-
-        // load details
-        this.clientService.getClientDetails(clientId).subscribe(details => {
-          this.registrationForm.get('details')?.patchValue(details);
-        });
-
-        // load address
-        this.clientService.getClientAddresses(clientId).subscribe(addresses => {
-          if (addresses.length > 0) {
-            this.registrationForm.get('address')?.patchValue(addresses[0]);
-          }
-        });
-
-        // load account
-        this.clientService.getClientAccounts(clientId).subscribe(accounts => {
-          if (accounts.length > 0) {
-            this.registrationForm.get('account')?.patchValue(accounts[0]);
-          }
-        });
-
-        this.loading = false;
-      },
-      error: (err) => {
-        this.loading = false;
-        console.error('Failed to load client', err);
       }
     });
   }
@@ -129,11 +77,36 @@ export class ClientForm implements OnInit {
     this.clientService.getCountries().subscribe(res => this.countries = res);
   }
 
+  loadClientData(clientId: number) {
+    this.loading = true;
+
+    forkJoin({
+      client: this.clientService.getClientById(clientId),
+      details: this.clientService.getClientDetails(clientId),
+      addresses: this.clientService.getClientAddresses(clientId),
+      accounts: this.clientService.getClientAccounts(clientId)
+    }).subscribe({
+      next: ({ client, details, addresses, accounts }) => {
+        this.registrationForm.get('client')?.patchValue({ clientName: client.clientName });
+        this.registrationForm.get('details')?.patchValue(details);
+        if (addresses.length > 0) {
+          this.currentAddressId = addresses[0].addressId ?? null; // <-- now type matches number | null
+          this.registrationForm.get('address')?.patchValue(addresses[0]);
+        }
+
+        if (accounts.length > 0) {
+          this.currentAccountId = accounts[0].accountId ?? null; // <-- use new accountId field
+          this.registrationForm.get('account')?.patchValue(accounts[0]);
+        }
+        this.loading = false;
+      },
+      error: err => { console.error(err); this.loading = false; }
+    });
+  }
+
   onCountryChange(): void {
     const countryId = Number(this.registrationForm.get('address.countryId')?.value);
-    this.divisions = [];
-    this.districts = [];
-    this.thanas = [];
+    this.divisions = []; this.districts = []; this.thanas = [];
     this.registrationForm.patchValue({ address: { divisionId: '', districtId: '', thanaId: '' } });
     if (!countryId) return;
     this.clientService.getDivisions(countryId).subscribe(res => this.divisions = res);
@@ -141,8 +114,7 @@ export class ClientForm implements OnInit {
 
   onDivisionChange(): void {
     const divisionId = Number(this.registrationForm.get('address.divisionId')?.value);
-    this.districts = [];
-    this.thanas = [];
+    this.districts = []; this.thanas = [];
     this.registrationForm.patchValue({ address: { districtId: '', thanaId: '' } });
     if (!divisionId) return;
     this.clientService.getDistricts(divisionId).subscribe(res => this.districts = res);
@@ -167,8 +139,9 @@ export class ClientForm implements OnInit {
     this.message = '';
 
     const clientRequest: CreateClientRequest = this.registrationForm.get('client')?.value;
+
     if (this.isEdit && this.clientId) {
-      // <<--- call update API instead of create
+      // ---------- UPDATE FLOW ----------
       this.clientService.updateClient(this.clientId, clientRequest).pipe(
         switchMap(() => {
           const detailsRequest: ClientDetailsRequest = {
@@ -182,35 +155,42 @@ export class ClientForm implements OnInit {
             ...this.registrationForm.get('address')?.value,
             clientId: this.clientId!
           };
-          return this.clientService.updateClientAddress(this.clientId!, addressRequest);
+          return this.clientService.updateClientAddress(this.clientId!, this.currentAddressId!, addressRequest);
         }),
         switchMap(() => {
           const accountRequest: AccountRequest = {
             ...this.registrationForm.get('account')?.value,
             clientId: this.clientId!
           };
-          return this.clientService.updateClientAccount(this.clientId!, accountRequest);
+          return this.clientService.updateClientAccount(this.clientId!, this.currentAccountId!, accountRequest);
         })
-      ).subscribe({
-        next: () => {
-          this.loading = false;
-          this.message = 'Client updated successfully.';
-        },
-        error: (err) => {
-          this.loading = false;
-          this.message = 'Update failed.';
-          console.error(err);
-        }
-      });
+
+      )
+        .subscribe({
+          next: () => {
+            this.loading = false;
+            this.message = 'Client updated successfully.';
+            this.router.navigate(['/client']).then(() => window.location.reload());
+          },
+          error: err => {
+            this.loading = false;
+            this.message = 'Update failed.';
+            console.error(err);
+          }
+
+        });
+
     } else {
-      // <<--- Keep your existing create flow here
+      // ---------- CREATE FLOW ----------
       this.clientService.createClient(clientRequest).pipe(
         switchMap(clientResponse => {
           const clientId = clientResponse.clientId;
+
           const detailsRequest: ClientDetailsRequest = {
             ...this.registrationForm.get('details')?.value,
             clientId
           };
+
           return this.clientService.saveClientDetails(clientId, detailsRequest).pipe(
             switchMap(() => {
               const addressRequest: AddressRequest = {
@@ -234,9 +214,9 @@ export class ClientForm implements OnInit {
           this.message = 'Client registration saved successfully.';
           this.registrationForm.reset();
         },
-        error: (err) => {
+        error: err => {
           this.loading = false;
-          this.message = 'Save failed. Check console and backend logs.';
+          this.message = 'Save failed.';
           console.error(err);
         }
       });
