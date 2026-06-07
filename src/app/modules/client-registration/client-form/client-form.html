@@ -1,1 +1,231 @@
-<p>client-form works!</p>
+<section class="registration-page">
+    <div class="chapter-line">
+        <span>CLIENT REGISTRATION</span>
+        <strong>ORM</strong>
+    </div>
+
+    <h1>Client Registration</h1>
+    <p class="subtitle">Enter client, address and account information below.</p>
+
+    <form [formGroup]="registrationForm" (ngSubmit)="submitForm()">
+
+        <!-- Client Info -->
+        <div class="form-panel">
+            <div class="panel-header">
+                <span>Client Info</span>
+                <span class="chevron">⌄</span>
+            </div>
+
+            <div class="panel-body" formGroupName="client">
+                <div class="form-grid single">
+                    <div class="form-field">
+                        <label>Client Name <span>*</span></label>
+                        <input type="text" formControlName="clientName" placeholder="Enter client name">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Client Details -->
+        <h2 class="section-title">7.1.2 &nbsp; Client Details</h2>
+
+        <div class="form-panel">
+            <div class="panel-header">
+                <span>Client Details</span>
+                <span class="chevron">⌄</span>
+            </div>
+
+            <div class="panel-body" formGroupName="details">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Father's Name</label>
+                        <input type="text" formControlName="fatherName" placeholder="Enter father's name">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Mother's Name</label>
+                        <input type="text" formControlName="motherName" placeholder="Enter mother's name">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Date of Birth</label>
+                        <input type="date" formControlName="dateOfBirth">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Gender</label>
+                        <select formControlName="gender">
+              <option value="">Select gender</option>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other</option>
+            </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Marital Status</label>
+                        <input type="text" formControlName="maritalStatus" placeholder="Enter marital status">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Spouse Name</label>
+                        <input type="text" formControlName="spouseName" placeholder="Enter spouse name">
+                    </div>
+
+                    <div class="form-field">
+                        <label>NID</label>
+                        <input type="text" formControlName="nid" placeholder="Enter NID">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address -->
+        <h2 class="section-title">7.2 &nbsp; Address Information Entry</h2>
+        <p class="small-text">The address section captures location and contact information.</p>
+
+        <div class="form-panel">
+            <div class="panel-header">
+                <span>Address & Contact</span>
+                <span class="chevron">⌄</span>
+            </div>
+
+            <div class="panel-body" formGroupName="address">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Address Type</label>
+                        <select formControlName="addressTypeId">
+              <option value="">Select Address Type</option>
+              <option *ngFor="let type of addressTypes" [value]="type.id">{{ type.name }}</option>
+            </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Country</label>
+                        <select formControlName="countryId" (change)="onCountryChange()">
+              <option value="">Select Country</option>
+              <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+            </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Division</label>
+                        <select formControlName="divisionId" (change)="onDivisionChange()">
+              <option value="">Select Division</option>
+              <option *ngFor="let div of divisions" [value]="div.id">{{ div.name }}</option>
+            </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>District</label>
+                        <select formControlName="districtId" (change)="onDistrictChange()">
+              <option value="">Select District</option>
+              <option *ngFor="let dist of districts" [value]="dist.id">{{ dist.name }}</option>
+            </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Thana</label>
+                        <select formControlName="thanaId">
+              <option value="">Select Thana</option>
+              <option *ngFor="let t of thanas" [value]="t.id">{{ t.name }}</option>
+            </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label>City</label>
+                        <input type="text" formControlName="city" placeholder="Enter city">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Zip Code</label>
+                        <input type="text" formControlName="zipCode" placeholder="Enter zip code">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Mobile No</label>
+                        <input type="text" formControlName="mobileNo" placeholder="Enter mobile no">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Email Address</label>
+                        <input type="email" formControlName="email" placeholder="Enter email address">
+                    </div>
+
+                    <div class="form-field full-width">
+                        <label>Full Address</label>
+                        <textarea formControlName="address" rows="3" placeholder="Type full address"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account -->
+        <h2 class="section-title">7.3 &nbsp; Account Creation</h2>
+        <p class="small-text">The final step creates a bank account for the client.</p>
+
+        <div class="form-panel">
+            <div class="panel-body" formGroupName="account">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label>Office Code</label>
+                        <input type="number" formControlName="officeId" placeholder="Enter office code">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Client Account SL</label>
+                        <input type="number" formControlName="clAccSl" placeholder="Enter account serial">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Account No</label>
+                        <input type="text" formControlName="accountNo" placeholder="Enter account no">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Account Title</label>
+                        <input type="text" formControlName="accountTitle" placeholder="Enter account title">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Account Type</label>
+                        <input type="text" formControlName="accountType" placeholder="Enter account type">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Open Date</label>
+                        <input type="date" formControlName="accountOpenDt">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Effective Date</label>
+                        <input type="date" formControlName="effectiveDt">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Expiry Date</label>
+                        <input type="date" formControlName="expiryDt">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Limit Amount</label>
+                        <input type="number" formControlName="limitAmt" placeholder="Enter limit amount">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Entity ID</label>
+                        <input type="text" formControlName="entityId" placeholder="Enter entity id">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" [disabled]="loading">
+        {{ loading ? 'Saving...' : 'Save' }}
+      </button>
+        </div>
+
+        <p class="message" *ngIf="message">{{ message }}</p>
+    </form>
+</section>
