@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './layout/main-layout/main-layout';
+import { ClientViewComponent } from './modules/client-registration/client-view/client-view';
 
 export const routes: Routes = [
     {
@@ -11,6 +12,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./features/home-page/home-page')
                         .then(m => m.HomePage)
+            },
+            {
+                path: 'client/view',
+                component: ClientViewComponent
             },
             {
                 path: 'client',

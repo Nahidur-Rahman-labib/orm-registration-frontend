@@ -1,0 +1,146 @@
+<div class="client-view-page">
+
+    <div class="page-header">
+        <div>
+            <h2>Client View</h2>
+            <p>View all clients with details, address, and account information</p>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="message">
+        Loading clients...
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!loading && clients.length === 0" class="message">
+        No clients found.
+    </div>
+
+    <div class="client-card" *ngFor="let client of clients">
+
+        <div class="client-main">
+            <div>
+                <h3>{{ client.clientName }}</h3>
+                <p>Client ID: {{ client.clientId }}</p>
+            </div>
+
+            <span class="status">
+        {{ client.approveFlag === 1 ? 'Approved' : 'Pending' }}
+      </span>
+        </div>
+
+        <div class="section">
+            <h4>Personal Details</h4>
+
+            <div class="info-grid" *ngIf="client.details; else noDetails">
+                <div>
+                    <label>Mobile</label>
+                    <p>{{ client.details.mobileNo || '-' }}</p>
+                </div>
+
+                <div>
+                    <label>Email</label>
+                    <p>{{ client.details.email || '-' }}</p>
+                </div>
+
+                <div>
+                    <label>Father Name</label>
+                    <p>{{ client.details.fatherName || '-' }}</p>
+                </div>
+
+                <div>
+                    <label>Mother Name</label>
+                    <p>{{ client.details.motherName || '-' }}</p>
+                </div>
+
+                <div>
+                    <label>NID</label>
+                    <p>{{ client.details.nid || '-' }}</p>
+                </div>
+
+                <div>
+                    <label>Date of Birth</label>
+                    <p>{{ client.details.dob || '-' }}</p>
+                </div>
+            </div>
+
+            <ng-template #noDetails>
+                <p class="empty-text">No personal details found.</p>
+            </ng-template>
+        </div>
+
+        <div class="section">
+            <h4>Addresses</h4>
+
+            <div class="table-wrapper" *ngIf="client.addresses && client.addresses.length > 0; else noAddress">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Address</th>
+                            <th>Country</th>
+                            <th>Division</th>
+                            <th>District</th>
+                            <th>Thana</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let address of client.addresses">
+                            <td>{{ address.addressTypeName || address.addressTypeId || '-' }}</td>
+                            <td>{{ address.addressLine || '-' }}</td>
+                            <td>{{ address.countryName || '-' }}</td>
+                            <td>{{ address.divisionName || '-' }}</td>
+                            <td>{{ address.districtName || '-' }}</td>
+                            <td>{{ address.thanaName || '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ng-template #noAddress>
+                <p class="empty-text">No address found.</p>
+            </ng-template>
+        </div>
+
+        <div class="section">
+            <h4>Accounts</h4>
+
+            <div class="table-wrapper" *ngIf="client.accounts && client.accounts.length > 0; else noAccount">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Office ID</th>
+                            <th>Account SL</th>
+                            <th>Account No</th>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Limit</th>
+                            <th>Open Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let account of client.accounts">
+                            <td>{{ account.officeId || '-' }}</td>
+                            <td>{{ account.clAccSl || '-' }}</td>
+                            <td>{{ account.accountNo || '-' }}</td>
+                            <td>{{ account.accountTitle || '-' }}</td>
+                            <td>{{ account.accountType || '-' }}</td>
+                            <td>{{ account.limitAmt || '-' }}</td>
+                            <td>{{ account.accountOpenDt || '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ng-template #noAccount>
+                <p class="empty-text">No account found.</p>
+            </ng-template>
+        </div>
+
+    </div>
+</div>

@@ -52,9 +52,19 @@ export class ClientForm implements OnInit {
         districtId: [''], thanaId: [''], city: [''], zipCode: [''], mobileNo: [''], email: ['']
       }),
       account: this.fb.group({
-        officeId: [''], clAccSl: [''], accountNo: [''], accountTitle: [''],
-        accountType: [''], accountOpenDt: [''], effectiveDt: [''],
-        expiryDt: [''], limitAmt: [''], entityId: ['']
+        officeId: ['', Validators.required],
+        clAccSl: ['', Validators.required],
+        accountNo: ['', Validators.required],
+        accountTitle: ['', Validators.required],
+        accountType: ['', Validators.required],
+        accountOpenDt: ['', Validators.required],
+        effectiveDt: [''],
+        expiryDt: [''],
+        limitAmt: ['', Validators.required],
+        entityId: [''],
+        approveFlag: [''],
+        recordUserId: [''],
+        recordDt: ['']
       })
     });
   }
@@ -90,12 +100,12 @@ export class ClientForm implements OnInit {
         this.registrationForm.get('client')?.patchValue({ clientName: client.clientName });
         this.registrationForm.get('details')?.patchValue(details);
         if (addresses.length > 0) {
-          this.currentAddressId = addresses[0].addressId ?? null; // <-- now type matches number | null
+          this.currentAddressId = addresses[0].addressId ?? null; // <-- fix addressId
           this.registrationForm.get('address')?.patchValue(addresses[0]);
         }
 
         if (accounts.length > 0) {
-          this.currentAccountId = accounts[0].accountId ?? null; // <-- use new accountId field
+          this.currentAccountId = accounts[0].accountId ?? null; // <-- fix accountId
           this.registrationForm.get('account')?.patchValue(accounts[0]);
         }
         this.loading = false;
@@ -141,7 +151,7 @@ export class ClientForm implements OnInit {
     const clientRequest: CreateClientRequest = this.registrationForm.get('client')?.value;
 
     if (this.isEdit && this.clientId) {
-      // ---------- UPDATE FLOW ----------
+      // UPDATE FLOW
       this.clientService.updateClient(this.clientId, clientRequest).pipe(
         switchMap(() => {
           const detailsRequest: ClientDetailsRequest = {
@@ -155,31 +165,31 @@ export class ClientForm implements OnInit {
             ...this.registrationForm.get('address')?.value,
             clientId: this.clientId!
           };
-          return this.clientService.updateClientAddress(this.clientId!, this.currentAddressId!, addressRequest);
+          return this.currentAddressId != null
+            ? this.clientService.updateClientAddress(this.clientId!, this.currentAddressId, addressRequest)
+            : this.clientService.addAddress(this.clientId!, addressRequest);
         }),
         switchMap(() => {
           const accountRequest: AccountRequest = {
             ...this.registrationForm.get('account')?.value,
             clientId: this.clientId!
           };
-          return this.clientService.updateClientAccount(this.clientId!, this.currentAccountId!, accountRequest);
+          return this.currentAccountId != null
+            ? this.clientService.updateClientAccount(this.clientId!, this.currentAccountId, accountRequest)
+            : this.clientService.addAccount(this.clientId!, accountRequest);
         })
-
-      )
-        .subscribe({
-          next: () => {
-            this.loading = false;
-            this.message = 'Client updated successfully.';
-            this.router.navigate(['/client']).then(() => window.location.reload());
-          },
-          error: err => {
-            this.loading = false;
-            this.message = 'Update failed.';
-            console.error(err);
-          }
-
-        });
-
+      ).subscribe({
+        next: () => {
+          this.loading = false;
+          this.message = 'Client updated successfully.';
+          this.router.navigate(['/client']).then(() => window.location.reload());
+        },
+        error: err => {
+          this.loading = false;
+          this.message = 'Update failed.';
+          console.error(err);
+        }
+      });
     } else {
       // ---------- CREATE FLOW ----------
       this.clientService.createClient(clientRequest).pipe(
