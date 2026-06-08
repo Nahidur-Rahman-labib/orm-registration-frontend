@@ -7,74 +7,50 @@
         </div>
     </div>
 
-    <div *ngIf="loading" class="message">
-        Loading clients...
-    </div>
-
-    <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-    </div>
-
-    <div *ngIf="!loading && clients.length === 0" class="message">
-        No clients found.
-    </div>
+    <div *ngIf="loading" class="message">Loading clients...</div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="!loading && clients.length === 0" class="message">No clients found.</div>
 
     <div class="client-card" *ngFor="let client of clients">
 
+        <!-- Client Main -->
         <div class="client-main">
             <div>
                 <h3>{{ client.clientName }}</h3>
                 <p>Client ID: {{ client.clientId }}</p>
             </div>
-
-            <span class="status">
-        {{ client.approveFlag === 1 ? 'Approved' : 'Pending' }}
-      </span>
+            <span class="status">{{ client.approveFlag === 1 ? 'Approved' : 'Pending' }}</span>
         </div>
 
+        <!-- Personal Details -->
         <div class="section">
             <h4>Personal Details</h4>
-
             <div class="info-grid" *ngIf="client.details; else noDetails">
-                <div>
-                    <label>Mobile</label>
-                    <p>{{ client.details.mobileNo || '-' }}</p>
-                </div>
-
-                <div>
-                    <label>Email</label>
-                    <p>{{ client.details.email || '-' }}</p>
-                </div>
-
                 <div>
                     <label>Father Name</label>
                     <p>{{ client.details.fatherName || '-' }}</p>
                 </div>
-
                 <div>
                     <label>Mother Name</label>
                     <p>{{ client.details.motherName || '-' }}</p>
                 </div>
-
                 <div>
                     <label>NID</label>
                     <p>{{ client.details.nid || '-' }}</p>
                 </div>
-
                 <div>
                     <label>Date of Birth</label>
-                    <p>{{ client.details.dob || '-' }}</p>
+                    <p>{{ client.details.dateOfBirth | date:'yyyy-MM-dd' }}</p>
                 </div>
             </div>
-
             <ng-template #noDetails>
                 <p class="empty-text">No personal details found.</p>
             </ng-template>
         </div>
 
+        <!-- Addresses -->
         <div class="section">
             <h4>Addresses</h4>
-
             <div class="table-wrapper" *ngIf="client.addresses && client.addresses.length > 0; else noAddress">
                 <table>
                     <thead>
@@ -85,9 +61,10 @@
                             <th>Division</th>
                             <th>District</th>
                             <th>Thana</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <tr *ngFor="let address of client.addresses">
                             <td>{{ address.addressTypeName || address.addressTypeId || '-' }}</td>
@@ -96,19 +73,20 @@
                             <td>{{ address.divisionName || '-' }}</td>
                             <td>{{ address.districtName || '-' }}</td>
                             <td>{{ address.thanaName || '-' }}</td>
+                            <td>{{ address.mobileNo || '-' }}</td>
+                            <td>{{ address.email || '-' }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
             <ng-template #noAddress>
                 <p class="empty-text">No address found.</p>
             </ng-template>
         </div>
 
+        <!-- Accounts -->
         <div class="section">
             <h4>Accounts</h4>
-
             <div class="table-wrapper" *ngIf="client.accounts && client.accounts.length > 0; else noAccount">
                 <table>
                     <thead>
@@ -120,23 +98,23 @@
                             <th>Type</th>
                             <th>Limit</th>
                             <th>Open Date</th>
+                            <th>Expiry Date</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         <tr *ngFor="let account of client.accounts">
-                            <td>{{ account.officeId || '-' }}</td>
-                            <td>{{ account.clAccSl || '-' }}</td>
-                            <td>{{ account.accountNo || '-' }}</td>
-                            <td>{{ account.accountTitle || '-' }}</td>
-                            <td>{{ account.accountType || '-' }}</td>
-                            <td>{{ account.limitAmt || '-' }}</td>
-                            <td>{{ account.accountOpenDt || '-' }}</td>
+                            <td>{{ account.officeId }}</td>
+                            <td>{{ account.clAccSl }}</td>
+                            <td>{{ account.accountNo }}</td>
+                            <td>{{ account.accountTitle }}</td>
+                            <td>{{ account.accountType }}</td>
+                            <td>{{ account.limitAmt }}</td>
+                            <td>{{ account.accountOpenDt | date:'yyyy-MM-dd' }}</td>
+                            <td>{{ account.expiryDt | date:'yyyy-MM-dd' }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
             <ng-template #noAccount>
                 <p class="empty-text">No account found.</p>
             </ng-template>

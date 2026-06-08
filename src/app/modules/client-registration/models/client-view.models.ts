@@ -12,16 +12,17 @@ export interface ClientView {
 
 export interface ClientDetailsView {
     clientDetailsId?: number;
-    mobileNo?: string;
-    email?: string;
+
     fatherName?: string;
     motherName?: string;
     nid?: string;
-    dob?: string;
+    dateOfBirth?: string;
 }
 
 export interface AddressView {
     addressId?: number;
+    mobileNo?: string;
+    email?: string;
     addressTypeId?: number;
     addressTypeName?: string;
     addressLine?: string;
@@ -32,11 +33,15 @@ export interface AddressView {
 }
 
 export interface AccountView {
-    officeId?: number;
-    clAccSl?: number;
-    accountNo?: string;
-    accountTitle?: string;
-    accountType?: string;
-    limitAmt?: number;
-    accountOpenDt?: string;
+    officeId: number;
+    clAccSl: number;
+    accountNo: string;
+    clientId: number;
+    accountTitle: string;
+    accountOpenDt: string; // ISO string from backend
+    effectiveDt: string;
+    expiryDt: string;
+    limitAmt: number;
+    entityId: string;
+    accountType: string;
 }

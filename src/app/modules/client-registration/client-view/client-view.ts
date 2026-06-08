@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClientViewService } from '../service/client-view.service';
 import { ClientView } from '../models/client-view.models';
+
 
 @Component({
     selector: 'app-client-view',
@@ -16,7 +17,10 @@ export class ClientViewComponent implements OnInit {
     loading = false;
     errorMessage = '';
 
-    constructor(private clientViewService: ClientViewService) { }
+    constructor(
+        private clientViewService: ClientViewService,
+        private cdr: ChangeDetectorRef
+    ) { }
 
     ngOnInit(): void {
         this.loadClients();
@@ -30,10 +34,12 @@ export class ClientViewComponent implements OnInit {
             next: (data) => {
                 this.clients = data;
                 this.loading = false;
+                this.cdr.detectChanges();
             },
             error: () => {
                 this.errorMessage = 'Failed to load client information.';
                 this.loading = false;
+                this.cdr.detectChanges();
             }
         });
     }
