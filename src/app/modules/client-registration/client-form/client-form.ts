@@ -19,6 +19,7 @@ import {
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule]
 })
+
 export class ClientForm implements OnInit {
 
   registrationForm: FormGroup;
@@ -35,6 +36,7 @@ export class ClientForm implements OnInit {
   districts: LookupResponse[] = [];
   thanas: LookupResponse[] = [];
 
+
   constructor(
     private fb: FormBuilder,
     private clientService: ClientRegistrationService,
@@ -42,10 +44,21 @@ export class ClientForm implements OnInit {
     private router: Router
   ) {
     this.registrationForm = this.fb.group({
-      client: this.fb.group({ clientName: ['', Validators.required] }),
+      client: this.fb.group({
+        clientName: ['', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.pattern(/^[a-zA-Z\s]+$/)
+        ]]
+      }),
       details: this.fb.group({
-        fatherName: [''], motherName: [''], gender: [''], dateOfBirth: [''],
-        maritalStatus: [''], spouseName: [''], nid: ['']
+        fatherName: ['', [Validators.required, Validators.minLength(2)]],
+        motherName: ['', [Validators.required, Validators.minLength(2)]],
+        gender: [''],
+        dateOfBirth: ['', [Validators.required]],
+        maritalStatus: [''],
+        spouseName: [''],
+        nid: ['', [Validators.required, Validators.pattern('\\d{5,20}')]]
       }),
       address: this.fb.group({
         address: [''], addressTypeId: [''], countryId: [''], divisionId: [''],

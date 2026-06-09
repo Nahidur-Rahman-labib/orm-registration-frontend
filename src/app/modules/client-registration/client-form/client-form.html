@@ -19,8 +19,21 @@
             <div class="panel-body" formGroupName="client">
                 <div class="form-grid single">
                     <div class="form-field">
-                        <label>Client Name <span>*</span></label>
-                        <input type="text" formControlName="clientName" placeholder="Enter client name">
+                        <label>Client Name <span class="required">*</span></label>
+                        <input type="text" formControlName="clientName" placeholder="Enter client name" [class.input-error]="registrationForm.get('client.clientName')?.invalid &&
+                                   registrationForm.get('client.clientName')?.touched">
+                        <span class="error-msg" *ngIf="registrationForm.get('client.clientName')?.touched &&
+                     registrationForm.get('client.clientName')?.hasError('required')">
+              Client name is required.
+            </span>
+                        <span class="error-msg" *ngIf="registrationForm.get('client.clientName')?.touched &&
+                     registrationForm.get('client.clientName')?.hasError('minlength')">
+              Client name must be at least 2 characters.
+            </span>
+                        <span class="error-msg" *ngIf="registrationForm.get('client.clientName')?.touched &&
+                     registrationForm.get('client.clientName')?.hasError('pattern')">
+              Client name can only contain letters and spaces.
+            </span>
                     </div>
                 </div>
             </div>
@@ -37,14 +50,34 @@
 
             <div class="panel-body" formGroupName="details">
                 <div class="form-grid">
+
                     <div class="form-field">
-                        <label>Father's Name</label>
-                        <input type="text" formControlName="fatherName" placeholder="Enter father's name">
+
+                        <label>Father's Name <span class="required">*</span></label>
+                        <input type="text" formControlName="fatherName" placeholder="Enter father's name" [class.input-error]="registrationForm.get('details.fatherName')?.invalid &&
+                                   registrationForm.get('details.fatherName')?.touched">
+                        <span class="error-msg" *ngIf="registrationForm.get('details.fatherName')?.touched &&
+                     registrationForm.get('details.fatherName')?.hasError('required')">
+              Father's name is required.
+            </span>
+                        <span class="error-msg" *ngIf="registrationForm.get('details.fatherName')?.touched &&
+                     registrationForm.get('details.fatherName')?.hasError('minlength')">
+              Must be at least 2 characters.
+            </span>
                     </div>
 
                     <div class="form-field">
-                        <label>Mother's Name</label>
-                        <input type="text" formControlName="motherName" placeholder="Enter mother's name">
+                        <label>Mother's Name <span class="required">*</span></label>
+                        <input type="text" formControlName="motherName" placeholder="Enter mother's name" [class.input-error]="registrationForm.get('details.motherName')?.invalid &&
+                                   registrationForm.get('details.motherName')?.touched">
+                        <span class="error-msg" *ngIf="registrationForm.get('details.motherName')?.touched &&
+                     registrationForm.get('details.motherName')?.hasError('required')">
+              Mother's name is required.
+            </span>
+                        <span class="error-msg" *ngIf="registrationForm.get('details.motherName')?.touched &&
+                     registrationForm.get('details.motherName')?.hasError('minlength')">
+              Must be at least 2 characters.
+            </span>
                     </div>
 
                     <div class="form-field">
@@ -73,8 +106,17 @@
                     </div>
 
                     <div class="form-field">
-                        <label>NID</label>
-                        <input type="text" formControlName="nid" placeholder="Enter NID">
+                        <label>NID <span class="required">*</span></label>
+                        <input type="text" formControlName="nid" placeholder="Enter NID" [class.input-error]="registrationForm.get('details.nid')?.invalid &&
+                                   registrationForm.get('details.nid')?.touched">
+                        <span class="error-msg" *ngIf="registrationForm.get('details.nid')?.touched &&
+                     registrationForm.get('details.nid')?.hasError('required')">
+              NID is required.
+            </span>
+                        <span class="error-msg" *ngIf="registrationForm.get('details.nid')?.touched &&
+                     registrationForm.get('details.nid')?.hasError('pattern')">
+              NID must be numeric and 5–20 digits.
+            </span>
                     </div>
                 </div>
             </div>

@@ -17,6 +17,15 @@ export interface ClientDetailsRequest {
     spouseName?: string;
     nid?: string;
 }
+export interface ClientDetailsResponse {
+    fatherName: string;
+    motherName: string;
+    gender: string;
+    dateOfBirth: string;
+    maritalStatus?: string;
+    spouseName?: string;
+    nid: string;
+}
 
 export interface AddressRequest {
     addressId?: number;
@@ -32,6 +41,19 @@ export interface AddressRequest {
     mobileNo?: string;
     email?: string;
 }
+export interface AddressResponse {
+    addressId: number;
+    address: string;
+    addressTypeName: string;
+    countryName: string;
+    divisionName: string;
+    districtName: string;
+    thanaName: string;
+    city: string;
+    zipCode: string;
+    mobileNo: string;
+    email: string;
+}
 
 export interface AccountRequest {
     accountId?: number;
@@ -44,6 +66,19 @@ export interface AccountRequest {
     expiryDt?: string;
     limitAmt?: number;
     entityId?: string;
+}
+export interface AccountResponse {
+    officeId: number;
+    clAccSl: number;
+    clientId: number;
+    accountNo: string;
+    accountTitle: string;
+    accountType: string;
+    accountOpenDt: string;
+    effectiveDt?: string;
+    expiryDt?: string;
+    limitAmt: number;
+    entityId: string;
 }
 
 export interface LookupResponse {
