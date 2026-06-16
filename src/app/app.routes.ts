@@ -13,10 +13,7 @@ export const routes: Routes = [
                     import('./features/home-page/home-page')
                         .then(m => m.HomePage)
             },
-            {
-                path: 'client/view',
-                component: ClientViewComponent
-            },
+
             {
                 path: 'client',
                 loadChildren: () =>
@@ -34,6 +31,10 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./features/all-components-page/all-components-page')
                         .then(m => m.AllComponentsPage)
+            },
+            {
+                path: 'client/view',
+                component: ClientViewComponent
             },
             {
                 path: '',

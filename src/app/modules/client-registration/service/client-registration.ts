@@ -16,7 +16,7 @@ import {
   providedIn: 'root'
 })
 export class ClientRegistrationService {
-  private clientUpdated = new Subject<void>();         // <-- Add this
+  private clientUpdated = new Subject<void>();
   clientUpdated$ = this.clientUpdated.asObservable();
 
   private readonly clientUrl = 'http://localhost:8080/api/clients';

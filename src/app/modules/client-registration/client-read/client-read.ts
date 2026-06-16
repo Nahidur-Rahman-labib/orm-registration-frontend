@@ -12,17 +12,17 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule]
 })
-export class ClientRead implements OnInit, OnDestroy {  // ADD OnDestroy
+export class ClientRead implements OnInit, OnDestroy {
 
   clients: GetClientResponse[] = [];
   loading = false;
   error = '';
-  private updateSub!: Subscription;  // ADD
+  private updateSub!: Subscription;
 
   constructor(
     private clientService: ClientRegistrationService,
     private router: Router,
-    private cdr: ChangeDetectorRef   // ADD
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -34,7 +34,7 @@ export class ClientRead implements OnInit, OnDestroy {  // ADD OnDestroy
   }
 
   ngOnDestroy(): void {
-    this.updateSub?.unsubscribe();   // ADD - prevents memory leak
+    this.updateSub?.unsubscribe();
   }
 
   loadClients(): void {
@@ -43,12 +43,12 @@ export class ClientRead implements OnInit, OnDestroy {  // ADD OnDestroy
       next: res => {
         this.clients = res;
         this.loading = false;
-        this.cdr.detectChanges();    // ADD
+        this.cdr.detectChanges();
       },
       error: err => {
         this.error = 'Failed to load clients';
         this.loading = false;
-        this.cdr.detectChanges();    // ADD
+        this.cdr.detectChanges();
         console.error(err);
       }
     });
@@ -66,7 +66,7 @@ export class ClientRead implements OnInit, OnDestroy {  // ADD OnDestroy
       error: err => {
         console.error(err);
         this.loading = false;
-        this.cdr.detectChanges();    // ADD
+        this.cdr.detectChanges();
       }
     });
   }
