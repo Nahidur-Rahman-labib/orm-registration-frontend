@@ -1,14 +1,56 @@
 <div class="app-layout">
-    <aside class="sidebar">
-        <h2>ORM Registration</h2>
-        <nav>
-            <a routerLink="/client/create" routerLinkActive="active">Create</a>
-            <a routerLink="/client" routerLinkActive="active">Read</a>
-            <a routerLink="/client/view" routerLinkActive="active">View</a>
+
+    <button type="button" class="menu-btn" (click)="toggleSidebar()" [attr.aria-expanded]="sidebarOpen" aria-label="Toggle sidebar">
+    <span *ngIf="!sidebarOpen">☰</span>
+    <span *ngIf="sidebarOpen">✕</span>
+  </button>
+
+    <aside class="sidebar" [class.open]="sidebarOpen">
+
+        <div class="sidebar-brand">
+            <span class="brand-badge">ORM</span>
+            <h2>Registration</h2>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a routerLink="/client/create" routerLinkActive="active" (click)="closeSidebar()">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+
+                <span class="nav-text">Create</span>
+            </a>
+
+            <a routerLink="/client" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeSidebar()">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="8" y1="6" x2="20" y2="6"></line>
+          <line x1="8" y1="12" x2="20" y2="12"></line>
+          <line x1="8" y1="18" x2="20" y2="18"></line>
+
+          <line x1="4" y1="6" x2="4.01" y2="6"></line>
+          <line x1="4" y1="12" x2="4.01" y2="12"></line>
+          <line x1="4" y1="18" x2="4.01" y2="18"></line>
+        </svg>
+
+                <span class="nav-text">Read</span>
+            </a>
+
+            <a routerLink="/client/view" routerLinkActive="active" (click)="closeSidebar()">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+
+                <span class="nav-text">View</span>
+            </a>
+
         </nav>
     </aside>
 
     <main class="content">
         <router-outlet></router-outlet>
     </main>
+
 </div>

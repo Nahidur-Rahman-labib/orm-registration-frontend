@@ -19,6 +19,13 @@
     letter-spacing: 0.4px;
 }
 
+.inner-box {
+    border: 1px solid #d7dde3;
+    padding: 12px;
+    border-radius: 3px;
+    background: #fafafa;
+}
+
 .chapter-line strong {
     background: #0ea5e9;
     color: #ffffff;
@@ -47,38 +54,84 @@ h1 {
 }
 
 .form-panel {
-    border: 1px solid #d1d5db;
-    border-radius: 3px;
-    margin-bottom: 18px;
+    border: 1px solid #d0d7de;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
     overflow: hidden;
-    background: #ffffff;
 }
 
+
+/* ---- Collapsible panel header (click/keyboard toggles the section) ---- */
+
 .panel-header {
-    background: #0078d7;
-    color: #ffffff;
-    padding: 7px 12px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
+    background: linear-gradient(180deg, #0d6efd, #0b5ed7);
+    color: #fff;
+    padding: 10px 14px;
+    font-size: 13px;
     font-weight: 600;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
+}
+
+.panel-header:hover {
+    background: linear-gradient(180deg, #0b5ed7, #0a53be);
+}
+
+.panel-header:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: -4px;
+}
+
+.panel-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.panel-icon {
+    flex-shrink: 0;
+    opacity: 0.95;
 }
 
 .chevron {
-    font-size: 18px;
-    line-height: 1;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.chevron.is-collapsed {
+    transform: rotate(-90deg);
 }
 
 .panel-body {
     padding: 16px 18px 18px;
 }
 
+.panel-body.collapsed {
+    display: none;
+}
+
+input,
+select,
+textarea {
+    height: 30px;
+    border: 1px solid #c9d1d9;
+    border-radius: 2px;
+    padding: 4px 8px;
+    font-size: 12px;
+    background: #eef1f4;
+    font-family: Arial, sans-serif;
+}
+
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px 18px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 14px;
 }
 
 .form-grid.single {
@@ -96,7 +149,7 @@ h1 {
     font-size: 12px;
     font-weight: 600;
     color: #111827;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .form-field label span {
@@ -113,7 +166,8 @@ h1 {
     font-size: 12px;
     font-family: Arial, sans-serif;
     outline: none;
-    background: #ffffff;
+    background: #eef1f4;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .form-field textarea {
@@ -124,6 +178,7 @@ h1 {
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
+    background: #ffffff;
     border-color: #0078d7;
     box-shadow: 0 0 0 1px rgba(0, 120, 215, 0.2);
 }
@@ -165,36 +220,9 @@ button:disabled {
     font-weight: 700;
 }
 
-.form-field {
-    // Red border on invalid touched inputs
-    .input-error {
-        border-color: #e24b4a !important;
-        box-shadow: 0 0 0 3px rgba(226, 75, 74, 0.12) !important;
-    }
-    // Inline error message under the field
-    .error-msg {
-        font-size: 11.5px;
-        color: #c0392b;
-        margin-top: 2px;
-        display: block;
-    }
-}
-
-// Backend error list (shown below the panel body)
-.backend-errors {
-    margin-top: 12px;
-    padding: 10px 14px;
-    background: #fcebeb;
-    border: 0.5px solid #f7c1c1;
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    .error-msg {
-        font-size: 12.5px;
-        color: #a32d2d;
-        font-weight: 500;
-    }
+.required {
+    color: #d60000;
+    margin-left: 3px;
 }
 
 .form-field {

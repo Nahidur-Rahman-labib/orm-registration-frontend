@@ -7,16 +7,41 @@
     <h1>Client Registration</h1>
     <p class="subtitle">Enter client, address and account information below.</p>
 
+    <h2 class="section-title">1 &nbsp; Client Name</h2>
+    <!-- Reusable icon templates (used by every panel header) -->
+    <ng-template #gridIcon>
+        <svg class="panel-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+            <rect x="0" y="0" width="4" height="4" rx="0.6"></rect>
+            <rect x="6" y="0" width="4" height="4" rx="0.6"></rect>
+            <rect x="12" y="0" width="4" height="4" rx="0.6"></rect>
+            <rect x="0" y="6" width="4" height="4" rx="0.6"></rect>
+            <rect x="6" y="6" width="4" height="4" rx="0.6"></rect>
+            <rect x="12" y="6" width="4" height="4" rx="0.6"></rect>
+            <rect x="0" y="12" width="4" height="4" rx="0.6"></rect>
+            <rect x="6" y="12" width="4" height="4" rx="0.6"></rect>
+            <rect x="12" y="12" width="4" height="4" rx="0.6"></rect>
+        </svg>
+    </ng-template>
+
+    <ng-template #chevronIcon let-collapsed="collapsed">
+        <svg class="chevron" [class.is-collapsed]="collapsed" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+    </ng-template>
+
     <form [formGroup]="registrationForm" (ngSubmit)="submitForm()">
 
         <!-- Client Info -->
         <div class="form-panel">
-            <div class="panel-header">
-                <span>Client Info</span>
-                <span class="chevron">⌄</span>
+            <div class="panel-header" (click)="togglePanel('client')" (keydown.enter)="togglePanel('client')" role="button" tabindex="0" [attr.aria-expanded]="panelState.client">
+                <span class="panel-header-left">
+                    <ng-container *ngTemplateOutlet="gridIcon"></ng-container>
+                    <span>Client Info</span>
+                </span>
+                <ng-container *ngTemplateOutlet="chevronIcon; context: { collapsed: !panelState.client }"></ng-container>
             </div>
 
-            <div class="panel-body" formGroupName="client">
+            <div class="panel-body" [class.collapsed]="!panelState.client" formGroupName="client">
                 <div class="form-grid single">
                     <div class="form-field">
                         <label>Client Name <span class="required">*</span></label>
@@ -40,15 +65,18 @@
         </div>
 
         <!-- Client Details -->
-        <h2 class="section-title">7.1.2 &nbsp; Client Details</h2>
+        <h2 class="section-title">2 &nbsp; Client Details</h2>
 
         <div class="form-panel">
-            <div class="panel-header">
-                <span>Client Details</span>
-                <span class="chevron">⌄</span>
+            <div class="panel-header" (click)="togglePanel('details')" (keydown.enter)="togglePanel('details')" role="button" tabindex="0" [attr.aria-expanded]="panelState.details">
+                <span class="panel-header-left">
+                    <ng-container *ngTemplateOutlet="gridIcon"></ng-container>
+                    <span>Client Details</span>
+                </span>
+                <ng-container *ngTemplateOutlet="chevronIcon; context: { collapsed: !panelState.details }"></ng-container>
             </div>
 
-            <div class="panel-body" formGroupName="details">
+            <div class="panel-body" [class.collapsed]="!panelState.details" formGroupName="details">
                 <div class="form-grid">
 
                     <div class="form-field">
@@ -123,16 +151,19 @@
         </div>
 
         <!-- Address -->
-        <h2 class="section-title">7.2 &nbsp; Address Information Entry</h2>
+        <h2 class="section-title">3 &nbsp; Address Information Entry</h2>
         <p class="small-text">The address section captures location and contact information.</p>
 
         <div class="form-panel">
-            <div class="panel-header">
-                <span>Address & Contact</span>
-                <span class="chevron">⌄</span>
+            <div class="panel-header" (click)="togglePanel('address')" (keydown.enter)="togglePanel('address')" role="button" tabindex="0" [attr.aria-expanded]="panelState.address">
+                <span class="panel-header-left">
+                    <ng-container *ngTemplateOutlet="gridIcon"></ng-container>
+                    <span>Address & Contact</span>
+                </span>
+                <ng-container *ngTemplateOutlet="chevronIcon; context: { collapsed: !panelState.address }"></ng-container>
             </div>
 
-            <div class="panel-body" formGroupName="address">
+            <div class="panel-body" [class.collapsed]="!panelState.address" formGroupName="address">
                 <div class="form-grid">
                     <div class="form-field">
                         <label>Address Type</label>
@@ -203,11 +234,19 @@
         </div>
 
         <!-- Account -->
-        <h2 class="section-title">7.3 &nbsp; Account Creation</h2>
+        <h2 class="section-title">4 &nbsp; Account Creation</h2>
         <p class="small-text">The final step creates a bank account for the client.</p>
 
         <div class="form-panel">
-            <div class="panel-body" formGroupName="account">
+            <div class="panel-header" (click)="togglePanel('account')" (keydown.enter)="togglePanel('account')" role="button" tabindex="0" [attr.aria-expanded]="panelState.account">
+                <span class="panel-header-left">
+                    <ng-container *ngTemplateOutlet="gridIcon"></ng-container>
+                    <span>Account Information</span>
+                </span>
+                <ng-container *ngTemplateOutlet="chevronIcon; context: { collapsed: !panelState.account }"></ng-container>
+            </div>
+
+            <div class="panel-body" [class.collapsed]="!panelState.account" formGroupName="account">
                 <div class="form-grid">
                     <div class="form-field">
                         <label>Office Code</label>

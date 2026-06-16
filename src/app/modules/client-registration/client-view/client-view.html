@@ -1,5 +1,10 @@
 <div class="client-view-page">
 
+    <div class="chapter-line">
+        <span>CLIENT VIEW</span>
+        <strong>ORM</strong>
+    </div>
+
     <div class="page-header">
         <div>
             <h2>Client View</h2>
@@ -19,7 +24,9 @@
                 <h3>{{ client.clientName }}</h3>
                 <p>Client ID: {{ client.clientId }}</p>
             </div>
-            <span class="status">{{ client.approveFlag === 1 ? 'Approved' : 'Pending' }}</span>
+            <span class="status" [class.approved]="client.approveFlag === 1">
+                {{ client.approveFlag === 1 ? 'Approved' : 'Pending' }}
+            </span>
         </div>
 
         <!-- Personal Details -->

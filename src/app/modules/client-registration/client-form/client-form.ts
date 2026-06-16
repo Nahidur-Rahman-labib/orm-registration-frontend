@@ -12,6 +12,8 @@ import {
   LookupResponse
 } from '../models/client-registration.models';
 
+type PanelKey = 'client' | 'details' | 'address' | 'account';
+
 @Component({
   selector: 'app-client-form',
   templateUrl: './client-form.html',
@@ -36,6 +38,14 @@ export class ClientForm implements OnInit {
   districts: LookupResponse[] = [];
   thanas: LookupResponse[] = [];
 
+  // Tracks which accordion panels are expanded. All open by default,
+  // matching the form's original always-visible layout.
+  panelState: Record<PanelKey, boolean> = {
+    client: true,
+    details: true,
+    address: true,
+    account: true
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -93,6 +103,12 @@ export class ClientForm implements OnInit {
         this.loadClientData(this.clientId);
       }
     });
+  }
+
+  // Expands or collapses one accordion panel. Bound to each panel-header's
+  // click/keyboard handler in the template.
+  togglePanel(section: PanelKey): void {
+    this.panelState[section] = !this.panelState[section];
   }
 
   loadLookups(): void {

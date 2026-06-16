@@ -1,24 +1,36 @@
-<h1>All Clients</h1>
+<section class="client-read-page">
+    <div class="chapter-line">
+        <span>CLIENT LIST </span>
+        <strong>ORM</strong>
+    </div>
 
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="error" class="error">{{ error }}</div>
+    <h1>All Clients</h1>
+    <p class="subtitle">View, edit, or remove client registration records.</p>
 
-<table *ngIf="!loading && clients.length > 0">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let client of clients">
-            <td>{{ client.clientName }}</td>
-            <td>
-                <button (click)="editClient(client.clientId)">Edit</button>
-                <button (click)="deleteClient(client.clientId)">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <div class="state-message loading" *ngIf="loading">Loading...</div>
+    <div class="state-message error" *ngIf="error">{{ error }}</div>
 
-<div *ngIf="!loading && clients.length === 0">No clients found.</div>
+    <div class="table-card" *ngIf="!loading && clients.length > 0">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class="actions-col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let client of clients">
+                    <td>{{ client.clientName }}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn-edit" (click)="editClient(client.clientId)">Edit</button>
+                            <button class="btn-delete" (click)="deleteClient(client.clientId)">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="state-message empty" *ngIf="!loading && clients.length === 0">No clients found.</div>
+</section>
