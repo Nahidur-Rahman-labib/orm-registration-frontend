@@ -91,6 +91,13 @@ export class ClientForm implements OnInit {
       })
     });
   }
+  // Add this helper method to your component
+  private toDateInput(value: any): string {
+    if (!value) return '';
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return '';
+    return d.toISOString().split('T')[0]; // → "YYYY-MM-DD"
+  }
 
   ngOnInit(): void {
     this.loadLookups();
@@ -127,15 +134,23 @@ export class ClientForm implements OnInit {
     }).subscribe({
       next: ({ client, details, addresses, accounts }) => {
         this.registrationForm.get('client')?.patchValue({ clientName: client.clientName });
-        this.registrationForm.get('details')?.patchValue(details);
+        this.registrationForm.get('details')?.patchValue({
+          ...details,
+          dateOfBirth: this.toDateInput(details.dateOfBirth)
+        });
         if (addresses.length > 0) {
           this.currentAddressId = addresses[0].addressId ?? null; // <-- fix addressId
           this.registrationForm.get('address')?.patchValue(addresses[0]);
         }
 
         if (accounts.length > 0) {
-          this.currentAccountId = accounts[0].accountId ?? null; // <-- fix accountId
-          this.registrationForm.get('account')?.patchValue(accounts[0]);
+          this.currentAccountId = accounts[0].accountId ?? null;
+          this.registrationForm.get('account')?.patchValue({
+            ...accounts[0],
+            accountOpenDt: this.toDateInput(accounts[0].accountOpenDt),
+            effectiveDt: this.toDateInput(accounts[0].effectiveDt),
+            expiryDt: this.toDateInput(accounts[0].expiryDt)
+          });
         }
         this.loading = false;
       },
