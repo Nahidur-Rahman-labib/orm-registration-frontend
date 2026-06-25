@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs';
 import { Subject } from 'rxjs';
+import { environment } from '../../../../environment/environment';
 import {
   AccountRequest,
   AddressRequest,
@@ -19,8 +20,8 @@ export class ClientRegistrationService {
   private clientUpdated = new Subject<void>();
   clientUpdated$ = this.clientUpdated.asObservable();
 
-  private readonly clientUrl = 'http://localhost:8080/api/clients';
-  private readonly lookupUrl = 'http://localhost:8080/api/lookup';
+  private readonly clientUrl = environment.clientUrl;
+  private readonly lookupUrl = environment.lookupUrl;
 
   constructor(private http: HttpClient) { }
 

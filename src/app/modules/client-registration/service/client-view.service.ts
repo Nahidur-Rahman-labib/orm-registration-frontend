@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { environment } from '../../../../environment/environment';
 import { ClientView, ClientDetailsView, AddressView, AccountView } from '../models/client-view.models';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { ClientView, ClientDetailsView, AddressView, AccountView } from '../mode
 })
 export class ClientViewService {
 
-  private baseUrl = 'http://localhost:8080/api/clients';
+  private baseUrl = environment.clientUrl;
 
   constructor(private http: HttpClient) { }
 
