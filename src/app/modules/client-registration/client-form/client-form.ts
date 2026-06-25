@@ -11,6 +11,7 @@ import {
   AccountRequest,
   LookupResponse
 } from '../models/client-registration.models';
+import { TextBoxComponent } from '../../../shared/components/text-box/text-box.component';
 
 type PanelKey = 'client' | 'details' | 'address' | 'account';
 
@@ -19,7 +20,7 @@ type PanelKey = 'client' | 'details' | 'address' | 'account';
   templateUrl: './client-form.html',
   styleUrls: ['./client-form.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, TextBoxComponent]
 })
 
 export class ClientForm implements OnInit {

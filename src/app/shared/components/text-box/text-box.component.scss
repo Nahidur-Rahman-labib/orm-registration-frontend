@@ -1,0 +1,86 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    font-family: Arial, sans-serif;
+}
+
+.text-box-field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+}
+
+.text-box-label {
+    margin-bottom: 4px;
+    color: #111827;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.required-mark {
+    margin-left: 3px;
+    color: #dc2626;
+}
+
+.text-box-input {
+    width: 100%;
+    min-width: 0;
+    height: 34px;
+    padding: 5px 8px;
+    border: 1px solid #b8c2cc;
+    border-radius: 2px;
+    outline: none;
+    background: #eef1f4;
+    color: #111827;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.text-box-input::placeholder {
+    color: #8b949e;
+    opacity: 1;
+}
+
+.text-box-input:hover:not(:disabled):not(:read-only) {
+    border-color: #8fa1b3;
+}
+
+.text-box-input:focus {
+    border-color: #0078d7;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.15);
+}
+
+.text-box-input:disabled {
+    cursor: not-allowed;
+    background: #e5e7eb;
+    color: #6b7280;
+    opacity: 0.75;
+}
+
+.text-box-input:read-only {
+    background: #e5e7eb;
+}
+
+
+/* Angular automatically adds these classes
+   to app-text-box when using formControlName */
+
+:host.ng-invalid.ng-touched .text-box-input {
+    border-color: #e24b4a;
+    background: #fffafa;
+    box-shadow: 0 0 0 2px rgba(226, 75, 74, 0.12);
+}
+
+.error-msg {
+    display: block;
+    margin-top: 3px;
+    color: #c0392b;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.35;
+}

@@ -5,58 +5,96 @@
     </div>
 
     <h1>Client Registration</h1>
-    <p class="subtitle">Enter client, address and account information below.</p>
 
-    <h2 class="section-title">1 &nbsp; Client Name</h2>
-    <!-- Reusable icon templates (used by every panel header) -->
+    <p class="subtitle">
+        Enter client, address and account information below.
+    </p>
+
+    <!-- Reusable grid icon -->
     <ng-template #gridIcon>
-        <svg class="panel-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
-            <rect x="0" y="0" width="4" height="4" rx="0.6"></rect>
-            <rect x="6" y="0" width="4" height="4" rx="0.6"></rect>
-            <rect x="12" y="0" width="4" height="4" rx="0.6"></rect>
-            <rect x="0" y="6" width="4" height="4" rx="0.6"></rect>
-            <rect x="6" y="6" width="4" height="4" rx="0.6"></rect>
-            <rect x="12" y="6" width="4" height="4" rx="0.6"></rect>
-            <rect x="0" y="12" width="4" height="4" rx="0.6"></rect>
-            <rect x="6" y="12" width="4" height="4" rx="0.6"></rect>
-            <rect x="12" y="12" width="4" height="4" rx="0.6"></rect>
-        </svg>
+        <svg class="panel-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
+      <rect x="0" y="0" width="4" height="4" rx="0.6"></rect>
+      <rect x="6" y="0" width="4" height="4" rx="0.6"></rect>
+      <rect x="12" y="0" width="4" height="4" rx="0.6"></rect>
+
+      <rect x="0" y="6" width="4" height="4" rx="0.6"></rect>
+      <rect x="6" y="6" width="4" height="4" rx="0.6"></rect>
+      <rect x="12" y="6" width="4" height="4" rx="0.6"></rect>
+
+      <rect x="0" y="12" width="4" height="4" rx="0.6"></rect>
+      <rect x="6" y="12" width="4" height="4" rx="0.6"></rect>
+      <rect x="12" y="12" width="4" height="4" rx="0.6"></rect>
+    </svg>
     </ng-template>
 
+    <!-- Reusable chevron icon -->
     <ng-template #chevronIcon let-collapsed="collapsed">
-        <svg class="chevron" [class.is-collapsed]="collapsed" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+        <svg class="chevron" [class.is-collapsed]="collapsed" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
     </ng-template>
 
-    <form [formGroup]="registrationForm" (ngSubmit)="submitForm()">
+    <form [formGroup]="registrationForm" (ngSubmit)="submitForm()" novalidate>
+        <!-- =====================================
+         1. Client Name
+    ====================================== -->
 
-        <!-- Client Info -->
+        <h2 class="section-title">1 &nbsp; Client Name</h2>
+
         <div class="form-panel">
-            <div class="panel-header" (click)="togglePanel('client')" (keydown.enter)="togglePanel('client')" role="button" tabindex="0" [attr.aria-expanded]="panelState.client">
+            <div class="panel-header" role="button" tabindex="0" [attr.aria-expanded]="panelState.client" (click)="togglePanel('client')" (keydown.enter)="togglePanel('client')" (keydown.space)="togglePanel('client'); $event.preventDefault()">
                 <span class="panel-header-left">
-                    <ng-container *ngTemplateOutlet="gridIcon"></ng-container>
-                    <span>Client Info</span>
+          <ng-container
+            *ngTemplateOutlet="gridIcon"
+          ></ng-container>
+
+          <span>Client Info</span>
                 </span>
-                <ng-container *ngTemplateOutlet="chevronIcon; context: { collapsed: !panelState.client }"></ng-container>
+
+                <ng-container *ngTemplateOutlet="
+            chevronIcon;
+            context: { collapsed: !panelState.client }
+          "></ng-container>
             </div>
 
-            <div class="panel-body" [class.collapsed]="!panelState.client" formGroupName="client">
+            <div class="panel-body" formGroupName="client" [class.collapsed]="!panelState.client">
                 <div class="form-grid single">
                     <div class="form-field">
-                        <label>Client Name <span class="required">*</span></label>
-                        <input type="text" formControlName="clientName" placeholder="Enter client name" [class.input-error]="registrationForm.get('client.clientName')?.invalid &&
-                                   registrationForm.get('client.clientName')?.touched">
-                        <span class="error-msg" *ngIf="registrationForm.get('client.clientName')?.touched &&
-                     registrationForm.get('client.clientName')?.hasError('required')">
+                        <app-text-box label="Client Name" placeholder="Enter client name" autocomplete="name" formControlName="clientName" [required]="true" [minlength]="2" [maxlength]="100"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('client.clientName')?.touched &&
+                registrationForm
+                  .get('client.clientName')
+                  ?.hasError('required')
+              ">
               Client name is required.
             </span>
-                        <span class="error-msg" *ngIf="registrationForm.get('client.clientName')?.touched &&
-                     registrationForm.get('client.clientName')?.hasError('minlength')">
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('client.clientName')?.touched &&
+                registrationForm
+                  .get('client.clientName')
+                  ?.hasError('minlength')
+              ">
               Client name must be at least 2 characters.
             </span>
-                        <span class="error-msg" *ngIf="registrationForm.get('client.clientName')?.touched &&
-                     registrationForm.get('client.clientName')?.hasError('pattern')">
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('client.clientName')?.touched &&
+                registrationForm
+                  .get('client.clientName')
+                  ?.hasError('maxlength')
+              ">
+              Client name cannot exceed 100 characters.
+            </span>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('client.clientName')?.touched &&
+                registrationForm
+                  .get('client.clientName')
+                  ?.hasError('pattern')
+              ">
               Client name can only contain letters and spaces.
             </span>
                     </div>
@@ -64,58 +102,113 @@
             </div>
         </div>
 
-        <!-- Client Details -->
+        <!-- =====================================
+         2. Client Details
+    ====================================== -->
+
         <h2 class="section-title">2 &nbsp; Client Details</h2>
 
         <div class="form-panel">
-            <div class="panel-header" (click)="togglePanel('details')" (keydown.enter)="togglePanel('details')" role="button" tabindex="0" [attr.aria-expanded]="panelState.details">
+            <div class="panel-header" role="button" tabindex="0" [attr.aria-expanded]="panelState.details" (click)="togglePanel('details')" (keydown.enter)="togglePanel('details')" (keydown.space)="togglePanel('details'); $event.preventDefault()">
                 <span class="panel-header-left">
-                    <ng-container *ngTemplateOutlet="gridIcon"></ng-container>
-                    <span>Client Details</span>
+          <ng-container
+            *ngTemplateOutlet="gridIcon"
+          ></ng-container>
+
+          <span>Client Details</span>
                 </span>
-                <ng-container *ngTemplateOutlet="chevronIcon; context: { collapsed: !panelState.details }"></ng-container>
+
+                <ng-container *ngTemplateOutlet="
+            chevronIcon;
+            context: { collapsed: !panelState.details }
+          "></ng-container>
             </div>
 
-            <div class="panel-body" [class.collapsed]="!panelState.details" formGroupName="details">
+            <div class="panel-body" formGroupName="details" [class.collapsed]="!panelState.details">
                 <div class="form-grid">
-
+                    <!-- Father's Name -->
                     <div class="form-field">
+                        <app-text-box label="Father's Name" placeholder="Enter father's name" formControlName="fatherName" [required]="true" [minlength]="2" [maxlength]="100"></app-text-box>
 
-                        <label>Father's Name <span class="required">*</span></label>
-                        <input type="text" formControlName="fatherName" placeholder="Enter father's name" [class.input-error]="registrationForm.get('details.fatherName')?.invalid &&
-                                   registrationForm.get('details.fatherName')?.touched">
-                        <span class="error-msg" *ngIf="registrationForm.get('details.fatherName')?.touched &&
-                     registrationForm.get('details.fatherName')?.hasError('required')">
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('details.fatherName')?.touched &&
+                registrationForm
+                  .get('details.fatherName')
+                  ?.hasError('required')
+              ">
               Father's name is required.
             </span>
-                        <span class="error-msg" *ngIf="registrationForm.get('details.fatherName')?.touched &&
-                     registrationForm.get('details.fatherName')?.hasError('minlength')">
-              Must be at least 2 characters.
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('details.fatherName')?.touched &&
+                registrationForm
+                  .get('details.fatherName')
+                  ?.hasError('minlength')
+              ">
+              Father's name must be at least 2 characters.
+            </span>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('details.fatherName')?.touched &&
+                registrationForm
+                  .get('details.fatherName')
+                  ?.hasError('pattern')
+              ">
+              Father's name can only contain letters and spaces.
             </span>
                     </div>
 
+                    <!-- Mother's Name -->
                     <div class="form-field">
-                        <label>Mother's Name <span class="required">*</span></label>
-                        <input type="text" formControlName="motherName" placeholder="Enter mother's name" [class.input-error]="registrationForm.get('details.motherName')?.invalid &&
-                                   registrationForm.get('details.motherName')?.touched">
-                        <span class="error-msg" *ngIf="registrationForm.get('details.motherName')?.touched &&
-                     registrationForm.get('details.motherName')?.hasError('required')">
+                        <app-text-box label="Mother's Name" placeholder="Enter mother's name" formControlName="motherName" [required]="true" [minlength]="2" [maxlength]="100"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('details.motherName')?.touched &&
+                registrationForm
+                  .get('details.motherName')
+                  ?.hasError('required')
+              ">
               Mother's name is required.
             </span>
-                        <span class="error-msg" *ngIf="registrationForm.get('details.motherName')?.touched &&
-                     registrationForm.get('details.motherName')?.hasError('minlength')">
-              Must be at least 2 characters.
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('details.motherName')?.touched &&
+                registrationForm
+                  .get('details.motherName')
+                  ?.hasError('minlength')
+              ">
+              Mother's name must be at least 2 characters.
+            </span>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('details.motherName')?.touched &&
+                registrationForm
+                  .get('details.motherName')
+                  ?.hasError('pattern')
+              ">
+              Mother's name can only contain letters and spaces.
             </span>
                     </div>
 
+                    <!-- Date of Birth -->
                     <div class="form-field">
-                        <label>Date of Birth</label>
-                        <input type="date" formControlName="dateOfBirth">
+                        <app-text-box label="Date of Birth" type="date" formControlName="dateOfBirth"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('details.dateOfBirth')?.touched &&
+                registrationForm
+                  .get('details.dateOfBirth')
+                  ?.hasError('futureDate')
+              ">
+              Date of birth cannot be in the future.
+            </span>
                     </div>
 
+                    <!-- Gender -->
                     <div class="form-field">
-                        <label>Gender</label>
-                        <select formControlName="gender">
+                        <label for="gender">Gender</label>
+
+                        <select id="gender" formControlName="gender">
               <option value="">Select gender</option>
               <option value="MALE">Male</option>
               <option value="FEMALE">Female</option>
@@ -123,190 +216,337 @@
             </select>
                     </div>
 
+                    <!-- Marital Status -->
                     <div class="form-field">
-                        <label>Marital Status</label>
-                        <input type="text" formControlName="maritalStatus" placeholder="Enter marital status">
+                        <app-text-box label="Marital Status" placeholder="Enter marital status" formControlName="maritalStatus" [maxlength]="30"></app-text-box>
                     </div>
 
+                    <!-- Spouse Name -->
                     <div class="form-field">
-                        <label>Spouse Name</label>
-                        <input type="text" formControlName="spouseName" placeholder="Enter spouse name">
+                        <app-text-box label="Spouse Name" placeholder="Enter spouse name" formControlName="spouseName" [maxlength]="100"></app-text-box>
                     </div>
 
+                    <!-- NID -->
                     <div class="form-field">
-                        <label>NID <span class="required">*</span></label>
-                        <input type="text" formControlName="nid" placeholder="Enter NID" [class.input-error]="registrationForm.get('details.nid')?.invalid &&
-                                   registrationForm.get('details.nid')?.touched">
-                        <span class="error-msg" *ngIf="registrationForm.get('details.nid')?.touched &&
-                     registrationForm.get('details.nid')?.hasError('required')">
+                        <app-text-box label="NID" placeholder="Enter NID" inputMode="numeric" autocomplete="off" formControlName="nid" [required]="true" [minlength]="5" [maxlength]="20"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('details.nid')?.touched &&
+                registrationForm
+                  .get('details.nid')
+                  ?.hasError('required')
+              ">
               NID is required.
             </span>
-                        <span class="error-msg" *ngIf="registrationForm.get('details.nid')?.touched &&
-                     registrationForm.get('details.nid')?.hasError('pattern')">
-              NID must be numeric and 5–20 digits.
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('details.nid')?.touched &&
+                registrationForm
+                  .get('details.nid')
+                  ?.hasError('pattern')
+              ">
+              NID must contain between 5 and 20 digits.
             </span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Address -->
-        <h2 class="section-title">3 &nbsp; Address Information Entry</h2>
-        <p class="small-text">The address section captures location and contact information.</p>
+        <!-- =====================================
+         3. Address Information
+    ====================================== -->
+
+        <h2 class="section-title">
+            3 &nbsp; Address Information Entry
+        </h2>
+
+        <p class="small-text">
+            The address section captures location and contact information.
+        </p>
 
         <div class="form-panel">
-            <div class="panel-header" (click)="togglePanel('address')" (keydown.enter)="togglePanel('address')" role="button" tabindex="0" [attr.aria-expanded]="panelState.address">
+            <div class="panel-header" role="button" tabindex="0" [attr.aria-expanded]="panelState.address" (click)="togglePanel('address')" (keydown.enter)="togglePanel('address')" (keydown.space)="togglePanel('address'); $event.preventDefault()">
                 <span class="panel-header-left">
-                    <ng-container *ngTemplateOutlet="gridIcon"></ng-container>
-                    <span>Address & Contact</span>
+          <ng-container
+            *ngTemplateOutlet="gridIcon"
+          ></ng-container>
+
+          <span>Address &amp; Contact</span>
                 </span>
-                <ng-container *ngTemplateOutlet="chevronIcon; context: { collapsed: !panelState.address }"></ng-container>
+
+                <ng-container *ngTemplateOutlet="
+            chevronIcon;
+            context: { collapsed: !panelState.address }
+          "></ng-container>
             </div>
 
-            <div class="panel-body" [class.collapsed]="!panelState.address" formGroupName="address">
+            <div class="panel-body" formGroupName="address" [class.collapsed]="!panelState.address">
                 <div class="form-grid">
+                    <!-- Address Type -->
                     <div class="form-field">
-                        <label>Address Type</label>
-                        <select formControlName="addressTypeId">
+                        <label for="addressTypeId">Address Type</label>
+
+                        <select id="addressTypeId" formControlName="addressTypeId">
               <option value="">Select Address Type</option>
-              <option *ngFor="let type of addressTypes" [value]="type.id">{{ type.name }}</option>
+
+              <option
+                *ngFor="let type of addressTypes"
+                [value]="type.id"
+              >
+                {{ type.name }}
+              </option>
             </select>
                     </div>
 
+                    <!-- Country -->
                     <div class="form-field">
-                        <label>Country</label>
-                        <select formControlName="countryId" (change)="onCountryChange()">
+                        <label for="countryId">Country</label>
+
+                        <select id="countryId" formControlName="countryId" (change)="onCountryChange()">
               <option value="">Select Country</option>
-              <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+
+              <option
+                *ngFor="let country of countries"
+                [value]="country.id"
+              >
+                {{ country.name }}
+              </option>
             </select>
                     </div>
 
+                    <!-- Division -->
                     <div class="form-field">
-                        <label>Division</label>
-                        <select formControlName="divisionId" (change)="onDivisionChange()">
+                        <label for="divisionId">Division</label>
+
+                        <select id="divisionId" formControlName="divisionId" (change)="onDivisionChange()">
               <option value="">Select Division</option>
-              <option *ngFor="let div of divisions" [value]="div.id">{{ div.name }}</option>
+
+              <option
+                *ngFor="let division of divisions"
+                [value]="division.id"
+              >
+                {{ division.name }}
+              </option>
             </select>
                     </div>
 
+                    <!-- District -->
                     <div class="form-field">
-                        <label>District</label>
-                        <select formControlName="districtId" (change)="onDistrictChange()">
+                        <label for="districtId">District</label>
+
+                        <select id="districtId" formControlName="districtId" (change)="onDistrictChange()">
               <option value="">Select District</option>
-              <option *ngFor="let dist of districts" [value]="dist.id">{{ dist.name }}</option>
+
+              <option
+                *ngFor="let district of districts"
+                [value]="district.id"
+              >
+                {{ district.name }}
+              </option>
             </select>
                     </div>
 
+                    <!-- Thana -->
                     <div class="form-field">
-                        <label>Thana</label>
-                        <select formControlName="thanaId">
+                        <label for="thanaId">Thana</label>
+
+                        <select id="thanaId" formControlName="thanaId">
               <option value="">Select Thana</option>
-              <option *ngFor="let t of thanas" [value]="t.id">{{ t.name }}</option>
+
+              <option
+                *ngFor="let thana of thanas"
+                [value]="thana.id"
+              >
+                {{ thana.name }}
+              </option>
             </select>
                     </div>
 
+                    <!-- City -->
                     <div class="form-field">
-                        <label>City</label>
-                        <input type="text" formControlName="city" placeholder="Enter city">
+                        <app-text-box label="City" placeholder="Enter city" formControlName="city" [maxlength]="100"></app-text-box>
                     </div>
 
+                    <!-- Zip Code -->
                     <div class="form-field">
-                        <label>Zip Code</label>
-                        <input type="text" formControlName="zipCode" placeholder="Enter zip code">
+                        <app-text-box label="Zip Code" placeholder="Enter zip code" inputMode="numeric" formControlName="zipCode" [maxlength]="10"></app-text-box>
                     </div>
 
+                    <!-- Mobile Number -->
                     <div class="form-field">
-                        <label>Mobile No</label>
-                        <input type="text" formControlName="mobileNo" placeholder="Enter mobile no">
+                        <app-text-box label="Mobile No" placeholder="Enter mobile number" type="tel" inputMode="tel" autocomplete="tel" formControlName="mobileNo" [maxlength]="20"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('address.mobileNo')?.touched &&
+                registrationForm
+                  .get('address.mobileNo')
+                  ?.hasError('pattern')
+              ">
+              Enter a valid mobile number.
+            </span>
                     </div>
 
+                    <!-- Email -->
                     <div class="form-field">
-                        <label>Email Address</label>
-                        <input type="email" formControlName="email" placeholder="Enter email address">
+                        <app-text-box label="Email Address" placeholder="Enter email address" type="email" inputMode="email" autocomplete="email" formControlName="email" [maxlength]="150"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('address.email')?.touched &&
+                registrationForm
+                  .get('address.email')
+                  ?.hasError('email')
+              ">
+              Enter a valid email address.
+            </span>
                     </div>
 
+                    <!-- Full Address -->
                     <div class="form-field full-width">
-                        <label>Full Address</label>
-                        <textarea formControlName="address" rows="3" placeholder="Type full address"></textarea>
+                        <label for="fullAddress">Full Address</label>
+
+                        <textarea id="fullAddress" rows="3" formControlName="address" placeholder="Type full address"></textarea>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Account -->
+        <!-- =====================================
+         4. Account Information
+    ====================================== -->
+
         <h2 class="section-title">4 &nbsp; Account Creation</h2>
-        <p class="small-text">The final step creates a bank account for the client.</p>
+
+        <p class="small-text">
+            The final step creates a bank account for the client.
+        </p>
 
         <div class="form-panel">
-            <div class="panel-header" (click)="togglePanel('account')" (keydown.enter)="togglePanel('account')" role="button" tabindex="0" [attr.aria-expanded]="panelState.account">
+            <div class="panel-header" role="button" tabindex="0" [attr.aria-expanded]="panelState.account" (click)="togglePanel('account')" (keydown.enter)="togglePanel('account')" (keydown.space)="togglePanel('account'); $event.preventDefault()">
                 <span class="panel-header-left">
-                    <ng-container *ngTemplateOutlet="gridIcon"></ng-container>
-                    <span>Account Information</span>
+          <ng-container
+            *ngTemplateOutlet="gridIcon"
+          ></ng-container>
+
+          <span>Account Information</span>
                 </span>
-                <ng-container *ngTemplateOutlet="chevronIcon; context: { collapsed: !panelState.account }"></ng-container>
+
+                <ng-container *ngTemplateOutlet="
+            chevronIcon;
+            context: { collapsed: !panelState.account }
+          "></ng-container>
             </div>
 
-            <div class="panel-body" [class.collapsed]="!panelState.account" formGroupName="account">
+            <div class="panel-body" formGroupName="account" [class.collapsed]="!panelState.account">
                 <div class="form-grid">
+                    <!-- Office Code -->
                     <div class="form-field">
-                        <label>Office Code</label>
-                        <input type="number" formControlName="officeId" placeholder="Enter office code">
+                        <app-text-box label="Office Code" placeholder="Enter office code" type="number" inputMode="numeric" formControlName="officeId" [required]="true"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('account.officeId')?.touched &&
+                registrationForm
+                  .get('account.officeId')
+                  ?.hasError('required')
+              ">
+              Office code is required.
+            </span>
                     </div>
 
+                    <!-- Client Account Serial -->
                     <div class="form-field">
-                        <label>Client Account SL</label>
-                        <input type="number" formControlName="clAccSl" placeholder="Enter account serial">
+                        <app-text-box label="Client Account SL" placeholder="Enter account serial" type="number" inputMode="numeric" formControlName="clAccSl" [required]="true"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('account.clAccSl')?.touched &&
+                registrationForm
+                  .get('account.clAccSl')
+                  ?.hasError('required')
+              ">
+              Client account serial is required.
+            </span>
                     </div>
 
+                    <!-- Account Number -->
                     <div class="form-field">
-                        <label>Account No</label>
-                        <input type="text" formControlName="accountNo" placeholder="Enter account no">
+                        <app-text-box label="Account No" placeholder="Enter account number" inputMode="numeric" formControlName="accountNo" [maxlength]="30"></app-text-box>
                     </div>
 
+                    <!-- Account Title -->
                     <div class="form-field">
-                        <label>Account Title</label>
-                        <input type="text" formControlName="accountTitle" placeholder="Enter account title">
+                        <app-text-box label="Account Title" placeholder="Enter account title" formControlName="accountTitle" [required]="true" [maxlength]="150"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('account.accountTitle')?.touched &&
+                registrationForm
+                  .get('account.accountTitle')
+                  ?.hasError('required')
+              ">
+              Account title is required.
+            </span>
                     </div>
 
+                    <!-- Account Type -->
                     <div class="form-field">
-                        <label>Account Type</label>
-                        <input type="text" formControlName="accountType" placeholder="Enter account type">
+                        <app-text-box label="Account Type" placeholder="Enter account type" formControlName="accountType" [required]="true" [maxlength]="50"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('account.accountType')?.touched &&
+                registrationForm
+                  .get('account.accountType')
+                  ?.hasError('required')
+              ">
+              Account type is required.
+            </span>
                     </div>
 
+                    <!-- Open Date -->
                     <div class="form-field">
-                        <label>Open Date</label>
-                        <input type="date" formControlName="accountOpenDt">
+                        <app-text-box label="Open Date" type="date" formControlName="accountOpenDt" [required]="true"></app-text-box>
+
+                        <span class="error-msg" *ngIf="
+                registrationForm.get('account.accountOpenDt')?.touched &&
+                registrationForm
+                  .get('account.accountOpenDt')
+                  ?.hasError('required')
+              ">
+              Account open date is required.
+            </span>
                     </div>
 
+                    <!-- Effective Date -->
                     <div class="form-field">
-                        <label>Effective Date</label>
-                        <input type="date" formControlName="effectiveDt">
+                        <app-text-box label="Effective Date" type="date" formControlName="effectiveDt"></app-text-box>
                     </div>
 
+                    <!-- Expiry Date -->
                     <div class="form-field">
-                        <label>Expiry Date</label>
-                        <input type="date" formControlName="expiryDt">
+                        <app-text-box label="Expiry Date" type="date" formControlName="expiryDt"></app-text-box>
                     </div>
 
+                    <!-- Limit Amount -->
                     <div class="form-field">
-                        <label>Limit Amount</label>
-                        <input type="number" formControlName="limitAmt" placeholder="Enter limit amount">
+                        <app-text-box label="Limit Amount" placeholder="Enter limit amount" type="number" inputMode="decimal" formControlName="limitAmt"></app-text-box>
                     </div>
 
+                    <!-- Entity ID -->
                     <div class="form-field">
-                        <label>Entity ID</label>
-                        <input type="text" formControlName="entityId" placeholder="Enter entity id">
+                        <app-text-box label="Entity ID" placeholder="Enter entity ID" formControlName="entityId" [maxlength]="10"></app-text-box>
                     </div>
                 </div>
             </div>
         </div>
 
+
+
+        <!-- Submit button -->
         <div class="form-actions">
             <button type="submit" [disabled]="loading">
         {{ loading ? 'Saving...' : 'Save' }}
       </button>
         </div>
 
-        <p class="message" *ngIf="message">{{ message }}</p>
+        <p class="message" *ngIf="message">
+            {{ message }}
+        </p>
     </form>
 </section>

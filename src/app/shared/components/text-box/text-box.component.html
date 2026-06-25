@@ -1,0 +1,16 @@
+<div class="text-box-field">
+    <label *ngIf="label" class="text-box-label" [for]="inputId">
+    {{ label }}
+
+    <span
+      *ngIf="required"
+      class="required-mark"
+      aria-hidden="true"
+    >
+      *
+    </span>
+  </label>
+
+    <input class="text-box-input" [id]="inputId" [type]="type" [value]="value" [placeholder]="placeholder" [disabled]="disabled" [readonly]="readonly" [required]="required" [attr.minlength]="minlength ?? null" [attr.maxlength]="maxlength ?? null" [attr.inputmode]="inputMode"
+        [attr.autocomplete]="autocomplete" (input)="handleInput($event)" (blur)="handleBlur()" />
+</div>

@@ -1,79 +1,102 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    padding: 24px 12px;
+    background: #f3f6f8;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+/* ========================================
+   Main registration container
+======================================== */
+
 .registration-page {
+    width: 100%;
     max-width: 980px;
     margin: 0 auto;
-    background: #ffffff;
     padding: 34px 42px;
     border-radius: 6px;
+    background: #ffffff;
     box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
-    font-family: Georgia, 'Times New Roman', serif;
+    font-family: Georgia, "Times New Roman", serif;
 }
+
+
+/* ========================================
+   Page heading
+======================================== */
 
 .chapter-line {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #9ca3af;
+    justify-content: space-between;
     margin-bottom: 20px;
     padding-bottom: 6px;
+    border-bottom: 1px solid #9ca3af;
     font-size: 14px;
     letter-spacing: 0.4px;
 }
 
-.inner-box {
-    border: 1px solid #d7dde3;
-    padding: 12px;
-    border-radius: 3px;
-    background: #fafafa;
-}
-
 .chapter-line strong {
+    padding: 3px 9px;
     background: #0ea5e9;
     color: #ffffff;
-    padding: 2px 8px;
     letter-spacing: 4px;
 }
 
 h1 {
+    margin: 0 0 8px;
     color: #00aeef;
     font-size: 26px;
-    margin: 0 0 8px;
+    font-weight: 700;
 }
 
 .subtitle,
 .small-text {
+    margin: 0 0 18px;
     color: #374151;
     font-size: 15px;
-    margin-bottom: 18px;
+    line-height: 1.5;
 }
 
 .section-title {
+    margin: 28px 0 12px;
     color: #00aeef;
     font-size: 22px;
-    margin: 28px 0 12px;
     font-weight: 600;
 }
+
+
+/* ========================================
+   Form panels
+======================================== */
 
 .form-panel {
+    overflow: hidden;
+    margin-bottom: 14px;
     border: 1px solid #d0d7de;
     border-radius: 4px;
-    margin-bottom: 14px;
-    background: #fff;
+    background: #ffffff;
     box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
-    overflow: hidden;
 }
 
-
-/* ---- Collapsible panel header (click/keyboard toggles the section) ---- */
-
 .panel-header {
-    background: linear-gradient(180deg, #0d6efd, #0b5ed7);
-    color: #fff;
-    padding: 10px 14px;
-    font-size: 13px;
-    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-height: 40px;
+    padding: 10px 14px;
+    background: linear-gradient(180deg, #0d6efd, #0b5ed7);
+    color: #ffffff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
     user-select: none;
     transition: background 0.15s ease;
@@ -84,7 +107,7 @@ h1 {
 }
 
 .panel-header:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid #ffffff;
     outline-offset: -4px;
 }
 
@@ -110,164 +133,283 @@ h1 {
 
 .panel-body {
     padding: 16px 18px 18px;
+    background: #ffffff;
 }
 
 .panel-body.collapsed {
     display: none;
 }
 
-input,
-select,
-textarea {
-    height: 30px;
-    border: 1px solid #c9d1d9;
-    border-radius: 2px;
-    padding: 4px 8px;
-    font-size: 12px;
-    background: #eef1f4;
-    font-family: Arial, sans-serif;
-}
+
+/* ========================================
+   Form layout
+======================================== */
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px 14px;
 }
 
 .form-grid.single {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     max-width: 380px;
 }
 
 .form-field {
     display: flex;
     flex-direction: column;
+    min-width: 0;
     font-family: Arial, sans-serif;
 }
 
 .form-field label {
+    margin-bottom: 4px;
+    color: #111827;
     font-size: 12px;
     font-weight: 600;
-    color: #111827;
-    margin-bottom: 4px;
+    line-height: 1.4;
 }
 
+.required,
 .form-field label span {
+    margin-left: 3px;
     color: #dc2626;
 }
+
+
+/* Allows reusable custom input components
+   to behave properly inside the grid */
+
+app-text-box {
+    display: block;
+    min-width: 0;
+    width: 100%;
+}
+
+
+/* ========================================
+   Input, select and textarea
+======================================== */
 
 .form-field input,
 .form-field select,
 .form-field textarea {
-    height: 30px;
+    width: 100%;
+    min-width: 0;
     border: 1px solid #b8c2cc;
     border-radius: 2px;
-    padding: 5px 8px;
-    font-size: 12px;
-    font-family: Arial, sans-serif;
     outline: none;
     background: #eef1f4;
+    color: #111827;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
     transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.form-field input,
+.form-field select {
+    height: 34px;
+    padding: 5px 8px;
+}
+
 .form-field textarea {
-    height: auto;
+    min-height: 74px;
+    padding: 8px;
+    line-height: 1.5;
     resize: vertical;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: #8b949e;
+    opacity: 1;
+}
+
+.form-field input:hover:not(:disabled):not(:read-only),
+.form-field select:hover:not(:disabled),
+.form-field textarea:hover:not(:disabled):not(:read-only) {
+    border-color: #8fa1b3;
 }
 
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-    background: #ffffff;
     border-color: #0078d7;
-    box-shadow: 0 0 0 1px rgba(0, 120, 215, 0.2);
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.15);
 }
+
+.form-field input:disabled,
+.form-field select:disabled,
+.form-field textarea:disabled {
+    cursor: not-allowed;
+    background: #e5e7eb;
+    color: #6b7280;
+    opacity: 0.75;
+}
+
+.form-field input:read-only,
+.form-field textarea:read-only {
+    background: #e5e7eb;
+}
+
+
+/* ========================================
+   Width helpers
+======================================== */
 
 .full-width {
     grid-column: 1 / -1;
 }
 
-.form-actions {
-    margin-top: 18px;
-    display: flex;
-    justify-content: flex-start;
+
+/* ========================================
+   Validation errors
+======================================== */
+
+.form-field .input-error,
+.input-error {
+    border-color: #e24b4a !important;
+    background: #fffafa !important;
+    box-shadow: 0 0 0 2px rgba(226, 75, 74, 0.12) !important;
 }
 
-button {
-    background: #0078d7;
-    color: #ffffff;
-    border: none;
-    padding: 8px 20px;
-    font-size: 13px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-button:hover {
-    background: #005fae;
-}
-
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.message {
-    margin-top: 16px;
-    color: #0078d7;
+.form-field .error-msg,
+.error-msg {
+    display: block;
+    margin-top: 3px;
+    color: #c0392b;
     font-family: Arial, sans-serif;
-    font-weight: 700;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.35;
 }
 
-.required {
-    color: #d60000;
-    margin-left: 3px;
-}
-
-.form-field {
-    // Red border on invalid touched inputs
-    .input-error {
-        border-color: #e24b4a !important;
-        box-shadow: 0 0 0 3px rgba(226, 75, 74, 0.12) !important;
-    }
-    // Inline error message under the field
-    .error-msg {
-        font-size: 11.5px;
-        color: #c0392b;
-        margin-top: 2px;
-        display: block;
-    }
-}
-
-// Backend error list (shown below the panel body)
 .backend-errors {
-    margin-top: 12px;
-    padding: 10px 14px;
-    background: #fcebeb;
-    border: 0.5px solid #f7c1c1;
-    border-radius: 6px;
     display: flex;
     flex-direction: column;
     gap: 4px;
-    .error-msg {
-        font-size: 12.5px;
-        color: #a32d2d;
-        font-weight: 500;
-    }
+    margin-top: 12px;
+    padding: 10px 14px;
+    border: 1px solid #f7c1c1;
+    border-radius: 6px;
+    background: #fcebeb;
 }
 
+.backend-errors .error-msg {
+    margin: 0;
+    color: #a32d2d;
+    font-size: 12.5px;
+    font-weight: 500;
+}
+
+
+/* ========================================
+   Form actions
+======================================== */
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 18px;
+}
+
+.form-actions button {
+    min-width: 90px;
+    padding: 9px 22px;
+    border: none;
+    border-radius: 3px;
+    background: #0078d7;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.form-actions button:hover:not(:disabled) {
+    background: #005fae;
+    box-shadow: 0 3px 8px rgba(0, 95, 174, 0.22);
+}
+
+.form-actions button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.form-actions button:focus-visible {
+    outline: 3px solid rgba(0, 120, 215, 0.25);
+    outline-offset: 2px;
+}
+
+.form-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+
+/* ========================================
+   Success or backend message
+======================================== */
+
+.message {
+    margin: 16px 0 0;
+    color: #0078d7;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+
+/* ========================================
+   Responsive design
+======================================== */
+
 @media (max-width: 900px) {
+     :host {
+        padding: 16px 10px;
+    }
     .registration-page {
         padding: 24px;
     }
     .form-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
 @media (max-width: 640px) {
-    .form-grid {
+     :host {
+        padding: 0;
+    }
+    .registration-page {
+        padding: 20px 14px;
+        border-radius: 0;
+    }
+    .chapter-line {
+        font-size: 12px;
+    }
+    h1 {
+        font-size: 23px;
+    }
+    .section-title {
+        margin-top: 24px;
+        font-size: 19px;
+    }
+    .panel-body {
+        padding: 14px;
+    }
+    .form-grid,
+    .form-grid.single {
         grid-template-columns: 1fr;
+        max-width: none;
+    }
+    .full-width {
+        grid-column: auto;
+    }
+    .form-actions button {
+        width: 100%;
     }
 }
