@@ -1,6 +1,7 @@
 **Project Overview**
 This frontend is built using Angular (standalone + modular approach) and integrates with a Spring Boot backend through REST APIs. It focuses on clean UI design, reactive forms, and structured data handling for enterprise-level CRUD operations.
 
+
 **Tech Stack**
 Angular (Standalone Components + Modules)
 TypeScript
