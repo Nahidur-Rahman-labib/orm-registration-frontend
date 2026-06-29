@@ -1,5 +1,6 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     forwardRef,
     Input
@@ -57,9 +58,13 @@ export class TextBoxComponent implements ControlValueAccessor {
     private onChange: (value: string) => void = () => { };
     private onTouched: () => void = () => { };
 
+    constructor(private cdr: ChangeDetectorRef) { }
+
     writeValue(value: string | number | null | undefined): void {
         this.value = value?.toString() ?? '';
+        this.cdr.markForCheck();
     }
+
 
     registerOnChange(fn: (value: string) => void): void {
         this.onChange = fn;
@@ -71,6 +76,7 @@ export class TextBoxComponent implements ControlValueAccessor {
 
     setDisabledState(disabled: boolean): void {
         this.disabled = disabled;
+        this.cdr.markForCheck();
     }
 
     handleInput(event: Event): void {
