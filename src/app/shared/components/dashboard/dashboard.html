@@ -1,0 +1,41 @@
+<section class="dashboard-page">
+    <div class="chapter-line">
+        <span>CLIENT REGISTRATION</span>
+        <strong>ORM</strong>
+    </div>
+
+    <h1>Dashboard</h1>
+    <p class="subtitle">Welcome back. What would you like to do?</p>
+
+    <div class="action-grid">
+        <button class="action-card" (click)="goToAddClient()">
+      <div class="card-icon accent">
+        <!-- user-plus icon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <line x1="19" y1="8" x2="19" y2="14"/>
+          <line x1="22" y1="11" x2="16" y2="11"/>
+        </svg>
+      </div>
+      <p class="card-title">Add new client</p>
+      <p class="card-sub">Register a new client record</p>
+    </button>
+
+        <button class="action-card" (click)="goToClientList()">
+      <div class="card-icon success">
+        <!-- users icon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <p class="card-title">View all clients</p>
+      <p class="card-sub">Browse and manage records</p>
+    </button>
+    </div>
+</section>
