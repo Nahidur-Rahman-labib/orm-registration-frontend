@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ClientRegistrationService } from '../service/client-registration';
 import { GetClientResponse } from '../models/client-registration.models';
 import { CommonModule } from '@angular/common';
+import { GenericButtonComponent } from '../../../shared/components/generic-button/generic-button.component';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -10,7 +11,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './client-read.html',
   styleUrls: ['./client-read.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, GenericButtonComponent]
 })
 export class ClientRead implements OnInit, OnDestroy {
 

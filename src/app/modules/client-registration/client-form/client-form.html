@@ -540,9 +540,7 @@
 
         <!-- Submit button -->
         <div class="form-actions">
-            <button type="submit" [disabled]="loading">
-        {{ loading ? 'Saving...' : 'Save' }}
-      </button>
+            <app-button label="Save" variant="primary" [loading]="loading" [enable]="!loading"></app-button>
         </div>
 
         <p class="message" *ngIf="message">

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { switchMap, forkJoin } from 'rxjs';
 import { DatePickerComponent } from '../../../shared/components/date-picker/date-picker.component';
+import { GenericButtonComponent } from '../../../shared/components/generic-button/generic-button.component';
 import { ClientRegistrationService } from '../service/client-registration';
 import {
   CreateClientRequest,
@@ -21,7 +22,7 @@ type PanelKey = 'client' | 'details' | 'address' | 'account';
   templateUrl: './client-form.html',
   styleUrls: ['./client-form.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, TextBoxComponent, DatePickerComponent]
+  imports: [ReactiveFormsModule, CommonModule, TextBoxComponent, DatePickerComponent, GenericButtonComponent]
 })
 
 export class ClientForm implements OnInit {

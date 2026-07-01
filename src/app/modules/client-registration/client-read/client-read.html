@@ -23,8 +23,9 @@
                     <td>{{ client.clientName }}</td>
                     <td>
                         <div class="actions">
-                            <button class="btn-edit" (click)="editClient(client.clientId)">Edit</button>
-                            <button class="btn-delete" (click)="deleteClient(client.clientId)">Delete</button>
+                            <app-button label="Edit" variant="ghost" size="sm" (onClick)="editClient(client.clientId)"></app-button>
+
+                            <app-button label="Delete" variant="danger" size="sm" (onClick)="deleteClient(client.clientId)"></app-button>
                         </div>
                     </td>
                 </tr>
