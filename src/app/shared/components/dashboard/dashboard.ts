@@ -13,7 +13,7 @@ export class Dashboard {
     constructor(private router: Router) { }
 
     goToAddClient(): void {
-        this.router.navigate(['/client/new']);
+        this.router.navigate(['/client/create']);
     }
 
     goToClientList(): void {
