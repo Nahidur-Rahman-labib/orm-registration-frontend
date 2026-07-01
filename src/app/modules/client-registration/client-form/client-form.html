@@ -192,7 +192,7 @@
 
                     <!-- Date of Birth -->
                     <div class="form-field">
-                        <app-text-box label="Date of Birth" type="date" formControlName="dateOfBirth"></app-text-box>
+                        <app-date-picker label="Date of Birth" formControlName="dateOfBirth" [required]="true" max="{{ today }}"></app-date-picker>
 
                         <span class="error-msg" *ngIf="
                 registrationForm.get('details.dateOfBirth')?.touched &&
@@ -501,7 +501,7 @@
 
                     <!-- Open Date -->
                     <div class="form-field">
-                        <app-text-box label="Open Date" type="date" formControlName="accountOpenDt" [required]="true"></app-text-box>
+                        <app-date-picker label="Open Date" formControlName="accountOpenDt" [required]="true"></app-date-picker>
 
                         <span class="error-msg" *ngIf="
                 registrationForm.get('account.accountOpenDt')?.touched &&
@@ -515,12 +515,12 @@
 
                     <!-- Effective Date -->
                     <div class="form-field">
-                        <app-text-box label="Effective Date" type="date" formControlName="effectiveDt"></app-text-box>
+                        <app-date-picker label="Effective Date" formControlName="effectiveDt"></app-date-picker>
                     </div>
 
                     <!-- Expiry Date -->
                     <div class="form-field">
-                        <app-text-box label="Expiry Date" type="date" formControlName="expiryDt"></app-text-box>
+                        <app-date-picker label="Expiry Date" formControlName="expiryDt"></app-date-picker>
                     </div>
 
                     <!-- Limit Amount -->

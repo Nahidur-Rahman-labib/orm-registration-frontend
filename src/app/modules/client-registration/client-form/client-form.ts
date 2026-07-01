@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { switchMap, forkJoin } from 'rxjs';
+import { DatePickerComponent } from '../../../shared/components/date-picker/date-picker.component';
 import { ClientRegistrationService } from '../service/client-registration';
 import {
   CreateClientRequest,
@@ -20,7 +21,7 @@ type PanelKey = 'client' | 'details' | 'address' | 'account';
   templateUrl: './client-form.html',
   styleUrls: ['./client-form.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, TextBoxComponent]
+  imports: [ReactiveFormsModule, CommonModule, TextBoxComponent, DatePickerComponent]
 })
 
 export class ClientForm implements OnInit {
@@ -47,6 +48,8 @@ export class ClientForm implements OnInit {
     address: true,
     account: true
   };
+
+  readonly today = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
 
   constructor(
     private fb: FormBuilder,

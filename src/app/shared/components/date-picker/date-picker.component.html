@@ -1,0 +1,7 @@
+<div class="date-field">
+    <label class="date-label" [for]="inputId">
+    {{ label }}
+    <span *ngIf="required" class="required-mark" aria-hidden="true">*</span>
+  </label>
+    <input class="date-input" [id]="inputId" type="date" [value]="value" [disabled]="disabled" [min]="min" [max]="max" [attr.aria-required]="required" (input)="handleInput($event)" (blur)="handleBlur()" />
+</div>

@@ -1,0 +1,61 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    font-family: Arial, sans-serif;
+}
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+}
+
+.date-label {
+    margin-bottom: 4px;
+    color: #111827;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    .required-mark {
+        margin-left: 3px;
+        color: #dc2626;
+    }
+}
+
+.date-input {
+    width: 100%;
+    min-width: 0;
+    height: 34px;
+    padding: 5px 8px;
+    border: 1px solid #b8c2cc;
+    border-radius: 2px;
+    outline: none;
+    background: #eef1f4;
+    color: #111827;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    box-sizing: border-box;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    &:hover:not(:disabled) {
+        border-color: #8fa1b3;
+    }
+    &:focus {
+        border-color: #0078d7;
+        background: #ffffff;
+        box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.15);
+    }
+    &:disabled {
+        cursor: not-allowed;
+        background: #e5e7eb;
+        color: #6b7280;
+        opacity: 0.75;
+    }
+}
+
+:host.ng-invalid.ng-touched .date-input {
+    border-color: #e24b4a;
+    background: #fffafa;
+    box-shadow: 0 0 0 2px rgba(226, 75, 74, 0.12);
+}
