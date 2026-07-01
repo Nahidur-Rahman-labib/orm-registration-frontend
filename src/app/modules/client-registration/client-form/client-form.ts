@@ -6,6 +6,7 @@ import { switchMap, forkJoin } from 'rxjs';
 import { DatePickerComponent } from '../../../shared/components/date-picker/date-picker.component';
 import { GenericButtonComponent } from '../../../shared/components/generic-button/generic-button.component';
 import { ClientRegistrationService } from '../service/client-registration';
+import { NavbarService } from '../service/navbar.service';
 import {
   CreateClientRequest,
   ClientDetailsRequest,
@@ -56,7 +57,8 @@ export class ClientForm implements OnInit {
     private fb: FormBuilder,
     private clientService: ClientRegistrationService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private navbar: NavbarService
   ) {
     this.registrationForm = this.fb.group({
       client: this.fb.group({
@@ -105,6 +107,16 @@ export class ClientForm implements OnInit {
   }
 
   ngOnInit(): void {
+    this.navbar.setPage({
+      pageTitle: this.isEdit ? 'Edit Client' : 'Client Registration',
+      showActions: true
+    });
+    this.navbar.registerActions({
+      onSave: () => this.submitForm(),
+      onReset: () => this.registrationForm.reset(),
+      onExit: () => this.router.navigate(['/client']),
+      onView: () => this.router.navigate(['/client'])
+    });
     this.loadLookups();
 
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -280,5 +292,8 @@ export class ClientForm implements OnInit {
         }
       });
     }
+  }
+  ngOnDestroy(): void {
+    this.navbar.clearActions();
   }
 }

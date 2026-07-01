@@ -1,14 +1,4 @@
 <section class="registration-page">
-    <div class="chapter-line">
-        <span>CLIENT REGISTRATION</span>
-        <strong>ORM</strong>
-    </div>
-
-    <h1>Client Registration</h1>
-
-    <p class="subtitle">
-        Enter client, address and account information below.
-    </p>
 
     <!-- Reusable grid icon -->
     <ng-template #gridIcon>
@@ -39,7 +29,6 @@
          1. Client Name
     ====================================== -->
 
-        <h2 class="section-title">1 &nbsp; Client Name</h2>
 
         <div class="form-panel">
             <div class="panel-header" role="button" tabindex="0" [attr.aria-expanded]="panelState.client" (click)="togglePanel('client')" (keydown.enter)="togglePanel('client')" (keydown.space)="togglePanel('client'); $event.preventDefault()">
@@ -106,7 +95,7 @@
          2. Client Details
     ====================================== -->
 
-        <h2 class="section-title">2 &nbsp; Client Details</h2>
+
 
         <div class="form-panel">
             <div class="panel-header" role="button" tabindex="0" [attr.aria-expanded]="panelState.details" (click)="togglePanel('details')" (keydown.enter)="togglePanel('details')" (keydown.space)="togglePanel('details'); $event.preventDefault()">
@@ -256,13 +245,6 @@
          3. Address Information
     ====================================== -->
 
-        <h2 class="section-title">
-            3 &nbsp; Address Information Entry
-        </h2>
-
-        <p class="small-text">
-            The address section captures location and contact information.
-        </p>
 
         <div class="form-panel">
             <div class="panel-header" role="button" tabindex="0" [attr.aria-expanded]="panelState.address" (click)="togglePanel('address')" (keydown.enter)="togglePanel('address')" (keydown.space)="togglePanel('address'); $event.preventDefault()">
@@ -413,12 +395,6 @@
         <!-- =====================================
          4. Account Information
     ====================================== -->
-
-        <h2 class="section-title">4 &nbsp; Account Creation</h2>
-
-        <p class="small-text">
-            The final step creates a bank account for the client.
-        </p>
 
         <div class="form-panel">
             <div class="panel-header" role="button" tabindex="0" [attr.aria-expanded]="panelState.account" (click)="togglePanel('account')" (keydown.enter)="togglePanel('account')" (keydown.space)="togglePanel('account'); $event.preventDefault()">
