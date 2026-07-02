@@ -70,6 +70,13 @@
         <!-- Sidebar -->
         <aside class="sidebar" [class.collapsed]="sidebarCollapsed()">
 
+            <!-- Fast Path -->
+            <div class="fast-path-wrap" [class.error]="fastPathError">
+                <input class="fast-path-input" type="text" placeholder="Fast Path.." [(ngModel)]="fastPath" (keydown)="onFastPath($event)" maxlength="10" title="Type a code and press Enter to navigate" />
+                <span class="fast-path-hint" *ngIf="fastPathError">No match</span>
+            </div>
+
+
             <!-- Menu (opens flyout) -->
             <button class="nav-item" [class.active]="menuOpen()" (click)="toggleMenu()">
         <svg width="18" height="18" viewBox="0 0 16 16"
