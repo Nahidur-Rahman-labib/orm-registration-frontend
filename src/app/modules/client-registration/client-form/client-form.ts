@@ -114,7 +114,7 @@ export class ClientForm implements OnInit {
     this.navbar.registerActions({
       onSave: () => this.submitForm(),
       onReset: () => this.registrationForm.reset(),
-      onExit: () => this.router.navigate(['/client']),
+      onExit: () => this.router.navigate(['/home']),
       onView: () => this.router.navigate(['/client'])
     });
     this.loadLookups();

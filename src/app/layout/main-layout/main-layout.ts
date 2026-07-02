@@ -3,7 +3,8 @@ import { Component, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NavbarService } from '../../modules/client-registration/service/navbar.service';
 
-type MenuSection = 'client';
+type MenuSection = 'client' | 'account';
+
 
 @Component({
   selector: 'app-main-layout',
@@ -22,7 +23,14 @@ export class MainLayout {
     public navbar: NavbarService
   ) { }
 
-  toggleSidebar(): void { this.sidebarCollapsed.update(v => !v); }
+  toggleSidebar(): void {
+    const newValue = !this.sidebarCollapsed();
+    this.sidebarCollapsed.set(newValue);
+    if (newValue) {
+      this.closeMenu();
+    }
+  }
+
   toggleSection(s: MenuSection): void {
     this.expandedSection.update(v => v === s ? null : s);
   }

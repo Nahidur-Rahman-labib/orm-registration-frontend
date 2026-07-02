@@ -220,6 +220,46 @@
               Client View
             </button>
                     </div>
+
+
+                    <!-- New section -->
+                    <div class="menu-section">
+                        <button class="section-header" (click)="toggleSection('account')">
+    <span class="section-left">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor">
+        <rect x="0" y="0" width="4" height="4" rx="0.6"/>
+        <rect x="6" y="0" width="4" height="4" rx="0.6"/>
+        <rect x="12" y="0" width="4" height="4" rx="0.6"/>
+        <rect x="0" y="6" width="4" height="4" rx="0.6"/>
+        <rect x="6" y="6" width="4" height="4" rx="0.6"/>
+        <rect x="12" y="6" width="4" height="4" rx="0.6"/>
+        <rect x="0" y="12" width="4" height="4" rx="0.6"/>
+        <rect x="6" y="12" width="4" height="4" rx="0.6"/>
+        <rect x="12" y="12" width="4" height="4" rx="0.6"/>
+      </svg>
+      Account Info
+    </span>
+    <svg class="chevron" [class.rotated]="expandedSection() === 'account'"
+      width="13" height="13" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </button>
+
+                        <div class="section-items" [class.expanded]="expandedSection() === 'account'">
+                            <button class="menu-item" (click)="navigate('/YOUR_ROUTE')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="16"/>
+        <line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+      Account 1
+    </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </aside>
