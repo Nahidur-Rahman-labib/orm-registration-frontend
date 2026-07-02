@@ -1,40 +1,38 @@
 $navbar-h: 48px;
-$sidebar-w: 68px;
-$sidebar-collapsed-w: 0px;
+$sidebar-w: 180px;
 .app-layout {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: #f3f6f8;
     font-family: Arial, sans-serif;
 }
 
-// ── Top Navbar ────────────────────────────────
+// ── Navbar ────────────────────────────────────
 .top-navbar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: $navbar-h;
-    background: linear-gradient(180deg, #0d6efd, #0b5ed7);
+    background: #1565c0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 20px;
     z-index: 300;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
 .navbar-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
 .hamburger {
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.85);
+    color: #fff;
     cursor: pointer;
     padding: 6px;
     border-radius: 4px;
@@ -43,15 +41,14 @@ $sidebar-collapsed-w: 0px;
     transition: background 0.15s;
     &:hover {
         background: rgba(255, 255, 255, 0.15);
-        color: #fff;
     }
 }
 
 .brand-name {
     color: #fff;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     cursor: pointer;
     user-select: none;
     &:hover {
@@ -60,22 +57,23 @@ $sidebar-collapsed-w: 0px;
 }
 
 .navbar-center {
-    flex: 1;
-    display: flex;
-    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .page-title {
     color: #fff;
     font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.02em;
 }
 
 .navbar-right {
     display: flex;
     align-items: center;
     gap: 6px;
+    margin-left: auto;
+    z-index: 1;
 }
 
 .nav-action-btn {
@@ -83,9 +81,9 @@ $sidebar-collapsed-w: 0px;
     align-items: center;
     gap: 5px;
     padding: 5px 12px;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 3px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
     color: #fff;
     font-family: Arial, sans-serif;
     font-size: 12px;
@@ -94,9 +92,6 @@ $sidebar-collapsed-w: 0px;
     transition: background 0.15s;
     &:hover {
         background: rgba(255, 255, 255, 0.22);
-    }
-    &.save {
-        border-color: rgba(255, 255, 255, 0.5);
     }
     &.exit {
         background: rgba(220, 38, 38, 0.3);
@@ -107,25 +102,20 @@ $sidebar-collapsed-w: 0px;
     }
 }
 
-// ── Body layout ───────────────────────────────
+// ── Body ──────────────────────────────────────
 .body-layout {
     display: flex;
     margin-top: $navbar-h;
     min-height: calc(100vh - #{$navbar-h});
-    position: relative;
 }
 
 // ── Sidebar ───────────────────────────────────
 .sidebar {
     width: $sidebar-w;
-    min-height: 100%;
-    background: linear-gradient(180deg, #0d6efd, #0b5ed7);
+    background: #fff;
+    border-right: 1px solid #e3e8f0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 8px 0;
-    gap: 2px;
-    flex-shrink: 0;
     position: fixed;
     top: $navbar-h;
     left: 0;
@@ -140,56 +130,66 @@ $sidebar-collapsed-w: 0px;
     }
 }
 
-.sidebar-section-btn {
-    width: 100%;
+.nav-item {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 10px 4px;
+    gap: 12px;
+    padding: 12px 20px;
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.75);
+    color: #374151;
     cursor: pointer;
-    font-size: 9px;
-    font-weight: 500;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    transition: background 0.15s, color 0.15s;
     white-space: nowrap;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+    svg {
+        flex-shrink: 0;
+    }
     &:hover {
-        background: rgba(255, 255, 255, 0.15);
-        color: #fff;
+        background: #eff6ff;
+        color: #1565c0;
+    }
+    &.active {
+        background: #dbeafe;
+        color: #1565c0;
+        border-right: 3px solid #1565c0;
     }
 }
 
-.sidebar-label {
-    font-size: 9px;
+.nav-label {
+    font-size: 13px;
 }
 
-.sidebar-avatar {
+.collapse-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
     margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 12px 0;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 9px;
-}
-
-.avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: transparent;
+    border: none;
+    border-top: 1px solid #e3e8f0;
+    color: #6b7280;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+    &:hover {
+        background: #f3f4f6;
+        color: #374151;
+    }
 }
 
 // ── Flyout ────────────────────────────────────
@@ -202,18 +202,17 @@ $sidebar-collapsed-w: 0px;
 .flyout-panel {
     position: fixed;
     top: $navbar-h;
-    left: $sidebar-w;
     bottom: 0;
     width: 0;
     overflow: hidden;
     background: #fff;
     box-shadow: 2px 0 16px rgba(0, 0, 0, 0.1);
     z-index: 150;
-    transition: width 0.22s ease;
+    transition: width 0.22s ease, left 0.22s ease;
     display: flex;
     flex-direction: column;
     &.open {
-        width: 240px;
+        width: 220px;
     }
 }
 
@@ -223,7 +222,7 @@ $sidebar-collapsed-w: 0px;
     justify-content: space-between;
     height: 44px;
     padding: 0 14px;
-    background: linear-gradient(180deg, #0d6efd, #0b5ed7);
+    background: #1565c0;
     color: #fff;
     font-size: 13px;
     font-weight: 600;
@@ -242,7 +241,6 @@ $sidebar-collapsed-w: 0px;
     align-items: center;
     &:hover {
         background: rgba(255, 255, 255, 0.15);
-        color: #fff;
     }
 }
 
@@ -316,7 +314,7 @@ $sidebar-collapsed-w: 0px;
     transition: background 0.15s, color 0.15s;
     &:hover {
         background: #e8f0fe;
-        color: #0d6efd;
+        color: #1565c0;
     }
 }
 
@@ -325,11 +323,9 @@ $sidebar-collapsed-w: 0px;
     margin-left: $sidebar-w;
     flex: 1;
     min-height: 100%;
-    overflow-y: auto;
+    background: #f0f4f8;
     transition: margin-left 0.22s ease;
-}
-
-.sidebar.collapsed~.main-content,
-.body-layout:has(.sidebar.collapsed) .main-content {
-    margin-left: 0;
+    &.expanded {
+        margin-left: 0;
+    }
 }

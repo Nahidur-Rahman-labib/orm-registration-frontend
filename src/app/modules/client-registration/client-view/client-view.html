@@ -5,13 +5,6 @@
         <strong>ORM</strong>
     </div>
 
-    <div class="page-header">
-        <div>
-            <h2>Client View</h2>
-            <p>View all clients with details, address, and account information</p>
-        </div>
-    </div>
-
     <div *ngIf="loading" class="message">Loading clients...</div>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     <div *ngIf="!loading && clients.length === 0" class="message">No clients found.</div>
