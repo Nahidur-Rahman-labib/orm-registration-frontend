@@ -4,6 +4,7 @@ import { ClientRegistrationService } from '../service/client-registration';
 import { GetClientResponse } from '../models/client-registration.models';
 import { CommonModule } from '@angular/common';
 import { GenericButtonComponent } from '../../../shared/components/generic-button/generic-button.component';
+import { NavbarService } from '../service/navbar.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -23,11 +24,13 @@ export class ClientRead implements OnInit, OnDestroy {
   constructor(
     private clientService: ClientRegistrationService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private navbar: NavbarService
   ) { }
 
   ngOnInit(): void {
     this.loadClients();
+    this.navbar.setPage({ pageTitle: 'Client List', showActions: false });
 
     this.updateSub = this.clientService.clientUpdated$.subscribe(() => {
       this.loadClients();
@@ -36,6 +39,7 @@ export class ClientRead implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.updateSub?.unsubscribe();
+    this.navbar.clearActions();
   }
 
   loadClients(): void {

@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClientViewService } from '../service/client-view.service';
 import { ClientView } from '../models/client-view.models';
+import { NavbarService } from '../service/navbar.service';
 
 
 @Component({
@@ -19,11 +20,17 @@ export class ClientViewComponent implements OnInit {
 
     constructor(
         private clientViewService: ClientViewService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private navbar: NavbarService
     ) { }
 
     ngOnInit(): void {
         this.loadClients();
+        this.navbar.setPage({ pageTitle: 'Client View', showActions: false });
+    }
+
+    ngOnDestroy(): void {
+        this.navbar.clearActions();
     }
 
     loadClients(): void {
