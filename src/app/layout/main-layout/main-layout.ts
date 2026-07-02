@@ -1,31 +1,42 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import {
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet
-} from '@angular/router';
+import { Component, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NavbarService } from '../../modules/client-registration/service/navbar.service';
+
+type MenuSection = 'client';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    RouterLink,
-    RouterLinkActive
-  ],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss'
 })
 export class MainLayout {
-  sidebarOpen = false;
+  sidebarCollapsed = signal(false);
+  expandedSection = signal<MenuSection | null>('client');
+  menuOpen = signal(false);
 
-  toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen;
+  constructor(
+    private router: Router,
+    public navbar: NavbarService
+  ) { }
+
+  toggleSidebar(): void { this.sidebarCollapsed.update(v => !v); }
+  toggleSection(s: MenuSection): void {
+    this.expandedSection.update(v => v === s ? null : s);
+  }
+  toggleMenu(): void { this.menuOpen.update(v => !v); }
+  closeMenu(): void { this.menuOpen.set(false); }
+
+  navigate(path: string): void {
+    this.router.navigate([path]);
+    this.closeMenu();
   }
 
-  closeSidebar(): void {
-    this.sidebarOpen = false;
+  goHome(): void { this.router.navigate(['/home']); }
+
+  isActive(path: string): boolean {
+    return this.router.url === path || this.router.url.startsWith(path + '/');
   }
 }

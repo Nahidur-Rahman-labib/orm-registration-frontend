@@ -1,0 +1,43 @@
+.home-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: calc(100vh - 48px);
+    padding-top: 80px;
+    background: #f3f6f8;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.home-center {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.orm-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 18px rgba(13, 110, 253, 0.22);
+}
+
+.home-center h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+}
+
+.tagline {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.6;
+}
