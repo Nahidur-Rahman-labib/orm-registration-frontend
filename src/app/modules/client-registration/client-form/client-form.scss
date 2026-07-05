@@ -464,3 +464,28 @@ app-date-picker {
         width: 100%;
     }
 }
+
+.account-block {
+    padding: 12px 0;
+    border-bottom: 1px dashed #d5dce4;
+    &:last-of-type {
+        border-bottom: none;
+    }
+}
+
+.account-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    span {
+        font-family: Arial, sans-serif;
+        font-weight: 600;
+        font-size: 13px;
+        color: #333;
+    }
+}
+
+.orm-btn--ghost.orm-btn--sm {
+    margin-top: 8px;
+}

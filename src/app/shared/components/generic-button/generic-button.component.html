@@ -1,14 +1,12 @@
-<button *ngIf="visible()" [class]="'orm-btn orm-btn--' + variant() + ' orm-btn--' + size() + (isDisabled ? ' orm-btn--disabled' : '') + (loading() ? ' orm-btn--loading' : '') + ' ' + cssClass()" [disabled]="isDisabled" (click)="onButtonClick($event)">
-  <!-- Spinner when loading -->
-  <span *ngIf="loading()" class="orm-btn__spinner" aria-hidden="true"></span>
+<button *ngIf="visible()" type="button" [class]="'orm-btn orm-btn--' + variant() + ' orm-btn--' + size() + (isDisabled ? ' orm-btn--disabled' : '') + (loading() ? ' orm-btn--loading' : '') + ' ' + cssClass()" [disabled]="isDisabled" (click)="onButtonClick($event)">
+<!-- Spinner when loading -->
+<span *ngIf="loading()" class="orm-btn__spinner" aria-hidden="true"></span>
 
-  <!-- Optional icon -->
-  <svg *ngIf="icon() && !loading()" class="orm-btn__icon"
-    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<!-- Optional icon -->
+<svg *ngIf="icon() && !loading()" class="orm-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path [attr.d]="icon()"/>
   </svg>
 
-  <!-- Label -->
-  <span *ngIf="label()">{{ loading() ? 'Please wait...' : label() }}</span>
+<!-- Label -->
+<span *ngIf="label()">{{ loading() ? 'Please wait...' : label() }}</span>
 </button>
