@@ -24,7 +24,7 @@
     </svg>
     </ng-template>
 
-    <form [formGroup]="registrationForm" (ngSubmit)="submitForm()" novalidate>
+    <form [formGroup]="registrationForm" (ngSubmit)="$event.preventDefault()" novalidate>
         <!-- =====================================
          1. Client Name
     ====================================== -->
@@ -209,12 +209,29 @@
                     <div class="form-field">
                         <app-text-box label="Marital Status" placeholder="Enter marital status" formControlName="maritalStatus" [maxlength]="30"></app-text-box>
                     </div>
+                    <!-- Marital Status Toggle -->
+                    <div class="form-field">
+                        <label>Marital Status</label>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Single</span>
+                            <button type="button" class="toggle-switch" [class.on]="isMarried" (click)="toggleMaritalStatus()" [attr.aria-checked]="isMarried" role="switch">
+      <span class="toggle-thumb"></span>
+    </button>
+                            <span class="toggle-label">Married</span>
+                        </div>
+                    </div>
 
-                    <!-- Spouse Name -->
+                    <!-- Spouse Name — only shows when married -->
+                    <div class="form-field" *ngIf="isMarried">
+                        <app-text-box label="Spouse Name" placeholder="Enter spouse name" formControlName="spouseName" [maxlength]="100">
+                        </app-text-box>
+                    </div>
+
+                    <!-- Spouse Name
                     <div class="form-field">
                         <app-text-box label="Spouse Name" placeholder="Enter spouse name" formControlName="spouseName" [maxlength]="100"></app-text-box>
                     </div>
-
+ -->
                     <!-- NID -->
                     <div class="form-field">
                         <app-text-box label="NID" placeholder="Enter NID" inputMode="numeric" autocomplete="off" formControlName="nid" [required]="true" [minlength]="5" [maxlength]="20"></app-text-box>
@@ -395,124 +412,90 @@
         <!-- =====================================
          4. Account Information
     ====================================== -->
-
         <div class="form-panel">
             <div class="panel-header" role="button" tabindex="0" [attr.aria-expanded]="panelState.account" (click)="togglePanel('account')" (keydown.enter)="togglePanel('account')" (keydown.space)="togglePanel('account'); $event.preventDefault()">
                 <span class="panel-header-left">
-          <ng-container
-            *ngTemplateOutlet="gridIcon"
-          ></ng-container>
-
-          <span>Account Information</span>
+      <ng-container *ngTemplateOutlet="gridIcon"></ng-container>
+      <span>Account Information</span>
                 </span>
-
-                <ng-container *ngTemplateOutlet="
-            chevronIcon;
-            context: { collapsed: !panelState.account }
-          "></ng-container>
+                <ng-container *ngTemplateOutlet="chevronIcon; context: { collapsed: !panelState.account }"></ng-container>
             </div>
 
-            <div class="panel-body" formGroupName="account" [class.collapsed]="!panelState.account">
-                <div class="form-grid">
-                    <!-- Office Code -->
-                    <div class="form-field">
-                        <app-text-box label="Office Code" placeholder="Enter office code" type="number" inputMode="numeric" formControlName="officeId" [required]="true"></app-text-box>
+            <div class="panel-body" [class.collapsed]="!panelState.account" formArrayName="accounts">
 
-                        <span class="error-msg" *ngIf="
-                registrationForm.get('account.officeId')?.touched &&
-                registrationForm
-                  .get('account.officeId')
-                  ?.hasError('required')
-              ">
-              Office code is required.
-            </span>
-                    </div>
+                <div *ngFor="let acc of accounts.controls; let i = index" [formGroupName]="i" class="account-block">
+                    <app-button label="- Remove Account" variant="ghost" size="sm" (onClick)="removeAccount(1)"></app-button>
+                    <div class="form-grid">
 
-                    <!-- Client Account Serial -->
-                    <div class="form-field">
-                        <app-text-box label="Client Account SL" placeholder="Enter account serial" type="number" inputMode="numeric" formControlName="clAccSl" [required]="true"></app-text-box>
 
-                        <span class="error-msg" *ngIf="
-                registrationForm.get('account.clAccSl')?.touched &&
-                registrationForm
-                  .get('account.clAccSl')
-                  ?.hasError('required')
-              ">
-              Client account serial is required.
-            </span>
-                    </div>
+                        <div class="form-field">
+                            <app-text-box label="Office Code" placeholder="Enter office code" type="number" inputMode="numeric" formControlName="officeId" [required]="true" [maxlength]="4"></app-text-box>
+                            <span class="error-msg" *ngIf="acc.get('officeId')?.touched && acc.get('officeId')?.hasError('required')">
+    Office code is required.
+  </span>
+                            <span class="error-msg" *ngIf="acc.get('officeId')?.touched && acc.get('officeId')?.hasError('max')">
+    Office code must be 4 digits or fewer.
+  </span>
+                        </div>
 
-                    <!-- Account Number -->
-                    <div class="form-field">
-                        <app-text-box label="Account No" placeholder="Enter account number" inputMode="numeric" formControlName="accountNo" [maxlength]="30"></app-text-box>
-                    </div>
+                        <div class="form-field">
+                            <app-text-box label="Client Account SL" placeholder="Enter account serial" type="number" inputMode="numeric" formControlName="clAccSl" [required]="true" [maxlength]="4"></app-text-box>
+                            <span class="error-msg" *ngIf="acc.get('clAccSl')?.touched && acc.get('clAccSl')?.hasError('required')">
+            Client account serial is required.
+          </span>
+                            <span class="error-msg" *ngIf="acc.get('clAccSl')?.touched && acc.get('clAccSl')?.hasError('max')">
+    Account SL code must be 4 digits or fewer.
+  </span>
+                        </div>
 
-                    <!-- Account Title -->
-                    <div class="form-field">
-                        <app-text-box label="Account Title" placeholder="Enter account title" formControlName="accountTitle" [required]="true" [maxlength]="150"></app-text-box>
+                        <div class="form-field">
+                            <app-text-box label="Account No" placeholder="Enter account number" inputMode="numeric" formControlName="accountNo" [maxlength]="30"></app-text-box>
+                        </div>
 
-                        <span class="error-msg" *ngIf="
-                registrationForm.get('account.accountTitle')?.touched &&
-                registrationForm
-                  .get('account.accountTitle')
-                  ?.hasError('required')
-              ">
-              Account title is required.
-            </span>
-                    </div>
+                        <div class="form-field">
+                            <app-text-box label="Account Title" placeholder="Enter account title" formControlName="accountTitle" [required]="true" [maxlength]="150"></app-text-box>
+                            <span class="error-msg" *ngIf="acc.get('accountTitle')?.touched && acc.get('accountTitle')?.hasError('required')">
+            Account title is required.
+          </span>
+                        </div>
 
-                    <!-- Account Type -->
-                    <div class="form-field">
-                        <app-text-box label="Account Type" placeholder="Enter account type" formControlName="accountType" [required]="true" [maxlength]="50"></app-text-box>
+                        <div class="form-field">
+                            <app-text-box label="Account Type" placeholder="Enter account type" formControlName="accountType" [required]="true" [maxlength]="50"></app-text-box>
+                            <span class="error-msg" *ngIf="acc.get('accountType')?.touched && acc.get('accountType')?.hasError('required')">
+            Account type is required.
+          </span>
+                        </div>
 
-                        <span class="error-msg" *ngIf="
-                registrationForm.get('account.accountType')?.touched &&
-                registrationForm
-                  .get('account.accountType')
-                  ?.hasError('required')
-              ">
-              Account type is required.
-            </span>
-                    </div>
+                        <div class="form-field">
+                            <app-date-picker label="Open Date" formControlName="accountOpenDt" [required]="true"></app-date-picker>
+                            <span class="error-msg" *ngIf="acc.get('accountOpenDt')?.touched && acc.get('accountOpenDt')?.hasError('required')">
+            Account open date is required.
+          </span>
+                        </div>
 
-                    <!-- Open Date -->
-                    <div class="form-field">
-                        <app-date-picker label="Open Date" formControlName="accountOpenDt" [required]="true"></app-date-picker>
+                        <div class="form-field">
+                            <app-date-picker label="Effective Date" formControlName="effectiveDt"></app-date-picker>
+                        </div>
 
-                        <span class="error-msg" *ngIf="
-                registrationForm.get('account.accountOpenDt')?.touched &&
-                registrationForm
-                  .get('account.accountOpenDt')
-                  ?.hasError('required')
-              ">
-              Account open date is required.
-            </span>
-                    </div>
+                        <div class="form-field">
+                            <app-date-picker label="Expiry Date" formControlName="expiryDt"></app-date-picker>
+                        </div>
 
-                    <!-- Effective Date -->
-                    <div class="form-field">
-                        <app-date-picker label="Effective Date" formControlName="effectiveDt"></app-date-picker>
-                    </div>
+                        <div class="form-field">
+                            <app-text-box label="Limit Amount" placeholder="Enter limit amount" type="number" inputMode="decimal" formControlName="limitAmt"></app-text-box>
+                        </div>
 
-                    <!-- Expiry Date -->
-                    <div class="form-field">
-                        <app-date-picker label="Expiry Date" formControlName="expiryDt"></app-date-picker>
-                    </div>
-
-                    <!-- Limit Amount -->
-                    <div class="form-field">
-                        <app-text-box label="Limit Amount" placeholder="Enter limit amount" type="number" inputMode="decimal" formControlName="limitAmt"></app-text-box>
-                    </div>
-
-                    <!-- Entity ID -->
-                    <div class="form-field">
-                        <app-text-box label="Entity ID" placeholder="Enter entity ID" formControlName="entityId" [maxlength]="10"></app-text-box>
+                        <div class="form-field">
+                            <app-text-box label="Entity ID" placeholder="Enter entity ID" formControlName="entityId" [maxlength]="10"></app-text-box>
+                        </div>
                     </div>
                 </div>
+
+                <app-button label="+ Add Another Account" variant="ghost" size="sm" (onClick)="addAccount()"></app-button>
+
+
             </div>
         </div>
-
-
 
         <!-- Submit button -->
         <div class="form-actions">

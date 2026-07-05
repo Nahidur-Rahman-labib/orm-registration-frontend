@@ -55,7 +55,7 @@ export class TextBoxComponent implements ControlValueAccessor {
     value = '';
     disabled = false;
 
-    private onChange: (value: string) => void = () => { };
+    private onChange: (value: string | number) => void = () => { };
     private onTouched: () => void = () => { };
 
     constructor(private cdr: ChangeDetectorRef) { }
@@ -66,7 +66,7 @@ export class TextBoxComponent implements ControlValueAccessor {
     }
 
 
-    registerOnChange(fn: (value: string) => void): void {
+    registerOnChange(fn: (value: string | number) => void): void {
         this.onChange = fn;
     }
 
@@ -84,6 +84,12 @@ export class TextBoxComponent implements ControlValueAccessor {
 
         this.value = input.value;
         this.onChange(this.value);
+
+        const emitValue = this.type === 'number' && input.value !== ''
+            ? Number(input.value)
+            : input.value;
+        this.onChange(emitValue);
+
     }
 
     handleBlur(): void {

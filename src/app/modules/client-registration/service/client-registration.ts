@@ -41,12 +41,18 @@ export class ClientRegistrationService {
     return this.http.delete(`${this.clientUrl}/${clientId}`);
   }
 
+
   addAddress(clientId: number, request: AddressRequest): Observable<any> {
     return this.http.post(`${this.clientUrl}/${clientId}/addresses`, request);
   }
 
   addAccount(clientId: number, request: AccountRequest): Observable<any> {
     return this.http.post(`${this.clientUrl}/${clientId}/accounts`, request);
+  }
+  deleteAccount(clientId: number, officeId: number, clAccSl: number) {
+    return this.http.delete<void>(
+      `${this.clientUrl}/${clientId}/accounts/${officeId}/${clAccSl}`
+    );
   }
 
   getAddressTypes(): Observable<LookupResponse[]> {
@@ -68,6 +74,7 @@ export class ClientRegistrationService {
   getThanas(districtId: number): Observable<LookupResponse[]> {
     return this.http.get<LookupResponse[]>(`${this.lookupUrl}/thanas/${districtId}`);
   }
+
 
   // ---------------- GET METHODS FOR EDIT PAGE ----------------
   getClientById(clientId: number) {
@@ -101,8 +108,8 @@ export class ClientRegistrationService {
     return this.http.get<AccountRequest[]>(`${this.clientUrl}/${clientId}/accounts`);
   }
 
-  updateClientAccount(clientId: number, accountId: number, request: AccountRequest) {
-    return this.http.put<AccountRequest>(`${this.clientUrl}/${clientId}/accounts/${accountId}`, request)
+  updateClientAccount(clientId: number, officeId: number, clAccSl: number, request: AccountRequest) {
+    return this.http.put<AccountRequest>(`${this.clientUrl}/${clientId}/accounts/${officeId}/${clAccSl}`, request)
       .pipe(tap(() => this.clientUpdated.next())); // notify subscribers
   }
 }

@@ -3,6 +3,7 @@ import { Injectable, signal } from '@angular/core';
 export interface NavbarConfig {
     pageTitle: string;
     showActions: boolean;
+    loading?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -14,6 +15,9 @@ export class NavbarService {
 
     readonly pageTitle = () => this.config().pageTitle;
     readonly showActions = () => this.config().showActions;
+    readonly loading = () => this.config().loading ?? false;
+
+
 
     // Action callbacks registered by the current page
     private _onSave?: () => void;
@@ -35,6 +39,9 @@ export class NavbarService {
         this._onReset = actions.onReset;
         this._onView = actions.onView;
         this._onExit = actions.onExit;
+    }
+    setLoading(loading: boolean): void {
+        this.config.update(c => ({ ...c, loading }));
     }
 
     clearActions(): void {

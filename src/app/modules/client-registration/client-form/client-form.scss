@@ -11,11 +11,6 @@
     box-sizing: border-box;
 }
 
-
-/* 
-   Main registration container
-*/
-
 .registration-page {
     width: 100%;
     max-width: 980px;
@@ -26,11 +21,6 @@
     box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
     font-family: Georgia, "Times New Roman", serif;
 }
-
-
-/* 
-   Page heading
-   */
 
 .chapter-line {
     display: flex;
@@ -141,7 +131,7 @@ h1 {
 }
 
 
-/* 
+/* ========================================
    Form layout
 ======================================== */
 
@@ -177,11 +167,13 @@ h1 {
     color: #dc2626;
 }
 
-
-/* Allows reusable custom input components
-   to behave properly inside the grid */
-
 app-text-box {
+    display: block;
+    min-width: 0;
+    width: 100%;
+}
+
+app-date-picker {
     display: block;
     min-width: 0;
     width: 100%;
@@ -192,11 +184,12 @@ app-text-box {
    Input, select and textarea
 ======================================== */
 
-.form-field input,
+.form-field input:not(.toggle-switch):not([type='button']):not([type='submit']),
 .form-field select,
 .form-field textarea {
     width: 100%;
     min-width: 0;
+    box-sizing: border-box;
     border: 1px solid #b8c2cc;
     border-radius: 2px;
     outline: none;
@@ -204,35 +197,32 @@ app-text-box {
     color: #111827;
     font-family: Arial, sans-serif;
     font-size: 12px;
+    height: 34px;
+    padding: 5px 8px;
     transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.form-field input,
-.form-field select {
-    height: 34px;
-    padding: 5px 8px;
-}
-
 .form-field textarea {
+    height: auto;
     min-height: 74px;
     padding: 8px;
     line-height: 1.5;
     resize: vertical;
 }
 
-.form-field input::placeholder,
+.form-field input:not(.toggle-switch)::placeholder,
 .form-field textarea::placeholder {
     color: #8b949e;
     opacity: 1;
 }
 
-.form-field input:hover:not(:disabled):not(:read-only),
+.form-field input:not(.toggle-switch):hover:not(:disabled):not(:read-only),
 .form-field select:hover:not(:disabled),
 .form-field textarea:hover:not(:disabled):not(:read-only) {
     border-color: #8fa1b3;
 }
 
-.form-field input:focus,
+.form-field input:not(.toggle-switch):focus,
 .form-field select:focus,
 .form-field textarea:focus {
     border-color: #0078d7;
@@ -240,7 +230,7 @@ app-text-box {
     box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.15);
 }
 
-.form-field input:disabled,
+.form-field input:not(.toggle-switch):disabled,
 .form-field select:disabled,
 .form-field textarea:disabled {
     cursor: not-allowed;
@@ -249,7 +239,7 @@ app-text-box {
     opacity: 0.75;
 }
 
-.form-field input:read-only,
+.form-field input:not(.toggle-switch):read-only,
 .form-field textarea:read-only {
     background: #e5e7eb;
 }
@@ -263,16 +253,67 @@ app-text-box {
     grid-column: 1 / -1;
 }
 
-app-date-picker {
-    display: block;
-    min-width: 0;
-    width: 100%;
+.marital-pair {
+    display: contents;
 }
 
 
-/* 
+/* ========================================
+   Toggle switch
+======================================== */
+
+.toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 34px;
+}
+
+.toggle-label {
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    color: #374151;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 42px;
+    height: 22px;
+    border-radius: 11px;
+    border: none;
+    background: #d1d5db;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+    &.on {
+        background: #0078d7;
+    }
+    &:focus-visible {
+        outline: 3px solid rgba(0, 120, 215, 0.25);
+        outline-offset: 2px;
+    }
+}
+
+.toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+    .toggle-switch.on & {
+        transform: translateX(20px);
+    }
+}
+
+
+/* ========================================
    Validation errors
-*/
+======================================== */
 
 .form-field .input-error,
 .input-error {
@@ -310,10 +351,14 @@ app-date-picker {
     font-weight: 500;
 }
 
+.half-col {
+    grid-column: span 1 !important;
+}
 
-/*
+
+/* ========================================
    Form actions
-*/
+======================================== */
 
 .form-actions {
     display: flex;
@@ -356,9 +401,9 @@ app-date-picker {
 }
 
 
-/* 
+/* ========================================
    Success or backend message
-*/
+======================================== */
 
 .message {
     margin: 16px 0 0;
@@ -370,9 +415,9 @@ app-date-picker {
 }
 
 
-/* 
+/* ========================================
    Responsive design
- */
+======================================== */
 
 @media (max-width: 900px) {
      :host {
@@ -418,4 +463,29 @@ app-date-picker {
     .form-actions button {
         width: 100%;
     }
+}
+
+.account-block {
+    padding: 12px 0;
+    border-bottom: 1px dashed #d5dce4;
+    &:last-of-type {
+        border-bottom: none;
+    }
+}
+
+.account-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    span {
+        font-family: Arial, sans-serif;
+        font-weight: 600;
+        font-size: 13px;
+        color: #333;
+    }
+}
+
+.orm-btn--ghost.orm-btn--sm {
+    margin-top: 8px;
 }
