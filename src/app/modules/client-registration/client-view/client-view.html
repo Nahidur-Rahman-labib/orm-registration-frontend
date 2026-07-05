@@ -42,6 +42,15 @@
                     <label>Date of Birth</label>
                     <p>{{ client.details.dateOfBirth | date:'yyyy-MM-dd' }}</p>
                 </div>
+                <div>
+                    <label>Marital Statuss</label>
+                    <p>{{ client.details.maritalStatus || '-' }}</p>
+                </div>
+                <div>
+                    <label>Spouse Name</label>
+                    <p>{{ client.details.spouseName || '-' }}</p>
+                </div>
+
             </div>
             <ng-template #noDetails>
                 <p class="empty-text">No personal details found.</p>

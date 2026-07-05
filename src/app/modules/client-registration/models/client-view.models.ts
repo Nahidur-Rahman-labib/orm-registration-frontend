@@ -17,6 +17,8 @@ export interface ClientDetailsView {
     motherName?: string;
     nid?: string;
     dateOfBirth?: string;
+    maritalStatus: string;
+    spouseName: string;
 }
 
 export interface AddressView {

@@ -23,7 +23,7 @@
 
         <div class="navbar-right">
             <ng-container *ngIf="navbar.showActions()">
-                <button class="nav-action-btn save" (click)="navbar.triggerSave()">
+                <button class="nav-action-btn save" (click)="navbar.triggerSave()" [disabled]="navbar.loading()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
@@ -205,6 +205,7 @@
                 <line x1="8" y1="12" x2="16" y2="12"/>
               </svg>
               Create Client
+              <span class="fast-badge">CC</span>
             </button>
                         <button class="menu-item" (click)="navigate('/client')">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
@@ -215,7 +216,8 @@
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
-              View Clients
+              List Client
+              <span class="fast-badge">CV</span>
             </button>
                         <button class="menu-item" (click)="navigate('/client/view')">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
@@ -225,6 +227,7 @@
                 <circle cx="12" cy="12" r="3"/>
               </svg>
               Client View
+              <span class="fast-badge">CR</span>
             </button>
                     </div>
 
@@ -264,6 +267,7 @@
         <line x1="8" y1="12" x2="16" y2="12"/>
       </svg>
       Account 1
+      <span class="fast-badge">A1</span>
     </button>
                         </div>
                     </div>

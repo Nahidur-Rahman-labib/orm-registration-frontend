@@ -32,6 +32,7 @@ export class ClientForm implements OnInit {
   loading = false;
   message = '';
   isEdit = false;
+  isMarried = false;
   clientId: number | null = null;
   currentAddressId: number | null = null;
   currentAccountId: number | null = null;
@@ -128,6 +129,9 @@ export class ClientForm implements OnInit {
       }
     });
   }
+  ngOnDestroy(): void {
+    this.navbar.clearActions();
+  }
 
   // Expands or collapses one accordion panel. Bound to each panel-header's
   // click/keyboard handler in the template.
@@ -140,6 +144,8 @@ export class ClientForm implements OnInit {
     this.clientService.getCountries().subscribe(res => this.countries = res);
   }
 
+
+
   loadClientData(clientId: number) {
     this.loading = true;
 
@@ -150,10 +156,12 @@ export class ClientForm implements OnInit {
       accounts: this.clientService.getClientAccounts(clientId)
     }).subscribe({
       next: ({ client, details, addresses, accounts }) => {
+        this.isMarried = details.maritalStatus === 'MARRIED';
         this.registrationForm.get('client')?.patchValue({ clientName: client.clientName });
         this.registrationForm.get('details')?.patchValue({
           ...details,
           dateOfBirth: this.toDateInput(details.dateOfBirth)
+
         });
         if (addresses.length > 0) {
           this.currentAddressId = addresses[0].addressId ?? null; // <-- fix addressId
@@ -198,8 +206,20 @@ export class ClientForm implements OnInit {
     if (!districtId) return;
     this.clientService.getThanas(districtId).subscribe(res => this.thanas = res);
   }
+  toggleMaritalStatus(): void {
+    this.isMarried = !this.isMarried;
+    this.registrationForm.get('details.maritalStatus')?.setValue(
+      this.isMarried ? 'MARRIED' : 'SINGLE'
+    );
+    if (!this.isMarried) {
+      this.registrationForm.get('details.spouseName')?.setValue('');
+    }
+  }
 
   submitForm(): void {
+    if (this.loading) return;
+    this.loading = true;
+    this.navbar.setLoading(true);
     if (this.registrationForm.invalid) {
       this.registrationForm.markAllAsTouched();
       this.message = 'Please fill required fields.';
@@ -275,6 +295,7 @@ export class ClientForm implements OnInit {
                 ...this.registrationForm.get('account')?.value,
                 clientId
               };
+              console.log('Account request:', accountRequest);  // 
               return this.clientService.addAccount(clientId, accountRequest);
             })
           );
@@ -293,7 +314,5 @@ export class ClientForm implements OnInit {
       });
     }
   }
-  ngOnDestroy(): void {
-    this.navbar.clearActions();
-  }
+
 }

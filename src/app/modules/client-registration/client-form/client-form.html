@@ -209,12 +209,29 @@
                     <div class="form-field">
                         <app-text-box label="Marital Status" placeholder="Enter marital status" formControlName="maritalStatus" [maxlength]="30"></app-text-box>
                     </div>
+                    <!-- Marital Status Toggle -->
+                    <div class="form-field">
+                        <label>Marital Status</label>
+                        <div class="toggle-row">
+                            <span class="toggle-label">Single</span>
+                            <button type="button" class="toggle-switch" [class.on]="isMarried" (click)="toggleMaritalStatus()" [attr.aria-checked]="isMarried" role="switch">
+      <span class="toggle-thumb"></span>
+    </button>
+                            <span class="toggle-label">Married</span>
+                        </div>
+                    </div>
 
-                    <!-- Spouse Name -->
+                    <!-- Spouse Name — only shows when married -->
+                    <div class="form-field" *ngIf="isMarried">
+                        <app-text-box label="Spouse Name" placeholder="Enter spouse name" formControlName="spouseName" [maxlength]="100">
+                        </app-text-box>
+                    </div>
+
+                    <!-- Spouse Name
                     <div class="form-field">
                         <app-text-box label="Spouse Name" placeholder="Enter spouse name" formControlName="spouseName" [maxlength]="100"></app-text-box>
                     </div>
-
+ -->
                     <!-- NID -->
                     <div class="form-field">
                         <app-text-box label="NID" placeholder="Enter NID" inputMode="numeric" autocomplete="off" formControlName="nid" [required]="true" [minlength]="5" [maxlength]="20"></app-text-box>
