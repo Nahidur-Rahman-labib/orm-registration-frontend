@@ -333,18 +333,15 @@ export class ClientForm implements OnInit {
 
         //known limitation can only update 1 account as account id is tracked
         switchMap(() => {
-          const accountChanges = this.getAccountChanges();
-          accountChanges.forEach((fields, key) => {
-            console.log(`Account ${key} changed fields:`, fields);
-          });
           const rawAccounts = this.registrationForm.get('accounts')?.value as any[];
-
+          const accountChanges = this.getAccountChanges(); // Map<"officeId-clAccSl", string[]>
 
           const currentKeys = rawAccounts.map(a => ({
             officeId: Number(a.officeId),
             clAccSl: Number(a.clAccSl)
           }));
 
+          // Accounts that existed before but are no longer in the form → delete
           const deletedKeys = this.loadedAccountKeys.filter(
             loaded => !currentKeys.some(
               cur => cur.officeId === loaded.officeId && cur.clAccSl === loaded.clAccSl
@@ -355,17 +352,36 @@ export class ClientForm implements OnInit {
             this.clientService.deleteAccount(this.clientId!, key.officeId, key.clAccSl)
           );
 
-          const upsertCalls = rawAccounts.map(raw => {
-            const req = this.buildAccountRequest(raw, this.clientId!);
-            const officeId = Number(raw.officeId);
-            const clAccSl = Number(raw.clAccSl);
-            const wasLoaded = this.loadedAccountKeys.some(
-              k => k.officeId === officeId && k.clAccSl === clAccSl
-            );
-            return wasLoaded
-              ? this.clientService.updateClientAccount(this.clientId!, officeId, clAccSl, req)
-              : this.clientService.addAccount(this.clientId!, req);
-          });
+          // Only send upserts for: brand-new accounts, or existing accounts that actually changed
+          const upsertCalls = rawAccounts
+            .filter(raw => {
+              const officeId = Number(raw.officeId);
+              const clAccSl = Number(raw.clAccSl);
+              const key = `${officeId}-${clAccSl}`;
+
+              const wasLoaded = this.loadedAccountKeys.some(
+                k => k.officeId === officeId && k.clAccSl === clAccSl
+              );
+
+              const isChanged = accountChanges.has(key);
+
+              return !wasLoaded || isChanged; // new account OR modified existing account
+            })
+            .map(raw => {
+              const req = this.buildAccountRequest(raw, this.clientId!);
+              const officeId = Number(raw.officeId);
+              const clAccSl = Number(raw.clAccSl);
+
+              const wasLoaded = this.loadedAccountKeys.some(
+                k => k.officeId === officeId && k.clAccSl === clAccSl
+              );
+
+              return wasLoaded
+                ? this.clientService.updateClientAccount(this.clientId!, officeId, clAccSl, req)
+                : this.clientService.addAccount(this.clientId!, req);
+            });
+
+          console.log(`Skipping ${rawAccounts.length - upsertCalls.length} unchanged account(s)`);
 
           return forkJoin([...deleteCalls, ...upsertCalls]);
         })
@@ -405,7 +421,7 @@ export class ClientForm implements OnInit {
             switchMap(() => {
               const rawAccounts = this.registrationForm.get('accounts')?.value as any[];
               const accountRequests = rawAccounts.map(raw => this.buildAccountRequest(raw, clientId));
-              console.log('Account requests:', accountRequests); // debug log
+              console.log('Account requests:', accountRequests);
 
               const accountCalls = accountRequests.map(req =>
                 this.clientService.addAccount(clientId, req)
