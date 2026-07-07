@@ -85,60 +85,8 @@ export class ClientForm implements OnInit {
         districtId: [''], thanaId: [''], city: [''], zipCode: [''], mobileNo: [''], email: ['']
       }),
       accounts: this.fb.array([this.buildAccountGroup()])
+      //account is a FormArray one2many (client have many accounts)
     });
-  }
-  // Add this helper method to your component
-  private toDateInput(value: any): string {
-    if (!value) return '';
-    const d = new Date(value);
-    if (isNaN(d.getTime())) return '';
-    return d.toISOString().split('T')[0]; // → "YYYY-MM-DD"
-  }
-
-  ngOnInit(): void {
-    this.navbar.setPage({
-      pageTitle: this.isEdit ? 'Edit Client' : 'Client Registration',
-      showActions: true
-    });
-    this.navbar.registerActions({
-      onSave: () => this.submitForm(),
-      onReset: () => this.registrationForm.reset(),
-      onExit: () => this.router.navigate(['/home']),
-      onView: () => this.router.navigate(['/client'])
-    });
-    this.loadLookups();
-
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      const idParam = params.get('id');
-      if (idParam) {
-        this.isEdit = true;
-        this.clientId = +idParam;
-        this.loadClientData(this.clientId);
-      }
-    });
-  }
-  ngOnDestroy(): void {
-    this.navbar.clearActions();
-  }
-
-  // Expands or collapses one accordion panel. Bound to each panel-header's
-  // click/keyboard handler in the template.
-  togglePanel(section: PanelKey): void {
-    this.panelState[section] = !this.panelState[section];
-  }
-
-  loadLookups(): void {
-    this.clientService.getAddressTypes().subscribe(res => this.addressTypes = res);
-    this.clientService.getCountries().subscribe(res => this.countries = res);
-  }
-  toggleMaritalStatus(): void {
-    this.isMarried = !this.isMarried;
-    this.registrationForm.get('details.maritalStatus')?.setValue(
-      this.isMarried ? 'MARRIED' : 'SINGLE'
-    );
-    if (!this.isMarried) {
-      this.registrationForm.get('details.spouseName')?.setValue('');
-    }
   }
   private buildAccountGroup(): FormGroup {
     return this.fb.group({
@@ -184,6 +132,66 @@ export class ClientForm implements OnInit {
   removeAccount(index: number): void {
     if (this.accounts.length > 1) {
       this.accounts.removeAt(index);
+    }
+  }
+
+  private toDateInput(value: any): string {
+    if (!value) return '';
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return '';
+    return d.toISOString().split('T')[0]; // → "YYYY-MM-DD"
+  }
+
+  ngOnInit(): void {
+    this.navbar.setPage({
+      pageTitle: this.isEdit ? 'Edit Client' : 'Client Registration',
+      showActions: true
+    });
+    this.navbar.registerActions({
+      onSave: () => this.submitForm(),
+      onReset: () => this.registrationForm.reset(),
+      onExit: () => this.router.navigate(['/home']),
+      onView: () => this.router.navigate(['/client'])
+    });
+
+    // loads address dropdown values
+    this.loadLookups();
+
+    this.route.paramMap.subscribe((params: ParamMap) => {
+
+      // get the id from the URL 
+      const idParam = params.get('id');
+      if (idParam) {  // if id in url this is edit page
+        this.isEdit = true;
+        this.clientId = +idParam;   //+ string to number
+        this.loadClientData(this.clientId);
+      }
+    });
+  }
+
+  // destroy navbar actions 
+  ngOnDestroy(): void {
+    this.navbar.clearActions();
+  }
+
+  // Expands or collapses one accordion panel
+  togglePanel(section: PanelKey): void {
+    this.panelState[section] = !this.panelState[section];
+  }
+
+  //loads the lookup/master data for dropdowns
+  loadLookups(): void {
+    this.clientService.getAddressTypes().subscribe(res => this.addressTypes = res);
+    this.clientService.getCountries().subscribe(res => this.countries = res);
+  }
+
+  toggleMaritalStatus(): void {
+    this.isMarried = !this.isMarried;
+    this.registrationForm.get('details.maritalStatus')?.setValue(
+      this.isMarried ? 'MARRIED' : 'SINGLE'
+    );
+    if (!this.isMarried) {
+      this.registrationForm.get('details.spouseName')?.setValue('');
     }
   }
 
