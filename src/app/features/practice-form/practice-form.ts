@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
-
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 @Component({
-  selector: 'app-practice-form',
-  imports: [],
+  selector: 'app-name-editor',
   templateUrl: './practice-form.html',
-  styleUrl: './practice-form.scss',
+  styleUrls: ['./practice-form.scss'],
+  imports: [ReactiveFormsModule],
 })
-export class PracticeForm {}
+export class PracticeForm {
+
+
+
+
+
+
+  practicename = new FormControl('');
+}
