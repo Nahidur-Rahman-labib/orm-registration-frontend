@@ -231,7 +231,7 @@ export class ClientForm implements OnInit {
 
   loadClientData(clientId: number) {
     this.loading = true;
-
+    //call all four api 
     forkJoin({
       client: this.clientService.getClientById(clientId),
       details: this.clientService.getClientDetails(clientId),
